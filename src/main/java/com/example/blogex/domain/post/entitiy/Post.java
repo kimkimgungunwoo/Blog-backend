@@ -1,12 +1,11 @@
 package com.example.blogex.domain.post.entitiy;
 
-import ch.qos.logback.classic.net.SMTPAppender;
 import com.example.blogex.domain.block.entitiy.Block;
 import com.example.blogex.domain.comment.entitiy.Comment;
 import com.example.blogex.domain.hashtag.entitiy.HashTag;
 import com.example.blogex.domain.postlike.entitiy.PostLike;
 import com.example.blogex.domain.user.entitiy.User;
-import com.example.blogex.global.common.BaseEntity;
+import com.example.blogex.common.Entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

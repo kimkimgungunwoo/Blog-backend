@@ -1,4 +1,4 @@
-package com.example.blogex.global.result;
+package com.example.blogex.common.Code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package com.example.blogex.domain.posttag.entitiy;
 
 import com.example.blogex.domain.hashtag.entitiy.HashTag;
 import com.example.blogex.domain.post.entitiy.Post;
-import com.example.blogex.global.common.BaseEntity;
+import com.example.blogex.common.Entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

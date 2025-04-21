@@ -1,8 +1,7 @@
-package com.example.blogex.global.common;
+package com.example.blogex.common.Entity;
 
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;

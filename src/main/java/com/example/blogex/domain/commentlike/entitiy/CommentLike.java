@@ -3,7 +3,7 @@ package com.example.blogex.domain.commentlike.entitiy;
 
 import com.example.blogex.domain.comment.entitiy.Comment;
 import com.example.blogex.domain.user.entitiy.User;
-import com.example.blogex.global.common.BaseEntity;
+import com.example.blogex.common.Entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

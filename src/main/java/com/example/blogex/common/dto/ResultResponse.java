@@ -1,6 +1,7 @@
-package com.example.blogex.global.result;
+package com.example.blogex.common.dto;
 
 
+import com.example.blogex.common.Code.ResultCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

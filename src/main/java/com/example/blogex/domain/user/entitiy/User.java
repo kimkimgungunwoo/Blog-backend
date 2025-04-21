@@ -6,7 +6,7 @@ import com.example.blogex.domain.commentlike.entitiy.CommentLike;
 import com.example.blogex.domain.follow.entitiy.Follow;
 import com.example.blogex.domain.post.entitiy.Post;
 import com.example.blogex.domain.postlike.entitiy.PostLike;
-import com.example.blogex.global.common.BaseEntity;
+import com.example.blogex.common.Entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
