@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor
 public class UserProfile {
@@ -18,6 +20,8 @@ public class UserProfile {
     private Long id;
     private String description;
     private String profileImageUrl;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private int followersCount;
     private int followingCount;
     private int postCount;
@@ -29,6 +33,8 @@ public class UserProfile {
                        Long id,
                        String description,
                        String profileImageUrl,
+                       LocalDateTime createdAt,
+                       LocalDateTime updatedAt,
                        int followersCount,
                        int followingCount,
                        int postCount,
@@ -38,6 +44,8 @@ public class UserProfile {
         this.id = id;
         this.description = description;
         this.profileImageUrl = profileImageUrl;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
         this.followersCount = followersCount;
         this.followingCount = followingCount;
         this.postCount = postCount;
