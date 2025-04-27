@@ -1,6 +1,7 @@
 package com.example.blogex.domain.comment.dto;
 
 
+import jakarta.annotation.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,15 +9,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CommentCreateRequest {
-    private Long userId;
     private String content;
+
+
+    @Nullable
     private Long parentCommentId;
 
     @Builder
-    public CommentCreateRequest(Long userId,
-                                String content,
+    public CommentCreateRequest(String content,
                                 Long parentCommentId) {
-        this.userId = userId;
+
         this.content = content;
         this.parentCommentId = parentCommentId;
     }
