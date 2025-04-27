@@ -14,10 +14,11 @@ import java.util.List;
 @NoArgsConstructor
 public class CommentInfo {
     private Long id;
+    // 댓글목록에서도 게시글 확인할 수 있도록
     private PostInfo postInfo;
     private UserSimpleInfo userSimpleInfo;
     private String content;
-    private LocalDateTime createTime;
+    private LocalDateTime createdAt;
     private List<CommentInfo> children;
 
     @Builder
@@ -26,14 +27,14 @@ public class CommentInfo {
             PostInfo postInfo,
             UserSimpleInfo userSimpleInfo,
             String content,
-            LocalDateTime createTime,
+            LocalDateTime createdAt,
             List<CommentInfo> children
     ){
         this.id = id;
         this.postInfo = postInfo;
         this.userSimpleInfo = userSimpleInfo;
         this.content = content;
-        this.createTime = createTime;
+        this.createdAt = createdAt;
         this.children = children;
 
     }

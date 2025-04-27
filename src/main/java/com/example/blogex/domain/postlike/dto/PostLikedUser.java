@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 /*
 특정 글에 좋아요 누른 유저 정보
-리스트에 담아서, 매핑해서 추출
  */
 @Getter
 @NoArgsConstructor
