@@ -2,6 +2,7 @@ package com.example.blogex.domain.hashtag.entitiy;
 
 import com.example.blogex.domain.post.entitiy.Post;
 import com.example.blogex.common.Entity.BaseEntity;
+import com.example.blogex.domain.posttag.entitiy.PostTag;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +34,7 @@ public class HashTag extends BaseEntity {
     }
 
     @OneToMany(mappedBy = "hashtag")
-    private Set<Post> posts=new HashSet<>();
+    private Set<PostTag> posts=new HashSet<>();
 
 
 
