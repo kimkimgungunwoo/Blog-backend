@@ -62,5 +62,5 @@ public class Comment extends BaseEntity {
     //CommentLike 의 likedComment 필드 기준으로 매핑된 commentLike 들 저장
     // 이 Comment 가 어떤 CommentLike 의 likedComment 로 설정됐을때, 그 commentLike 들이 저장됨
     @OneToMany(mappedBy = "likedComment")
-    private Set<CommentLike> likes=new HashSet<>();
+    private Set<CommentLike> likes = new HashSet<>();
 }
