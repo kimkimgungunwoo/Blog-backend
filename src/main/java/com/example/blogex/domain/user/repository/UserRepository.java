@@ -38,4 +38,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     order by (count(distinct c)+count(distinct p)) desc""")
     List<User> findAllByOrderByActivityDesc();
 
+
+
 }
