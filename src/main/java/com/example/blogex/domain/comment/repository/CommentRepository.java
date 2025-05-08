@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     WHERE c.post.id = :postId
     GROUP By c
     ORDER BY count(l) DESC""")
-    List<Comment> findByPostIdOrderOrderByLikes(Long postId);
+    List<Comment> findByPostIdOrderOrderByLikes(@Param("postId") Long postId);
 
     //댓글 답글 순 정렬
     //쿼리사용
@@ -45,5 +46,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     WHERE c.post.id=:postId
     GROUP BY c
     ORDER BY count(ch) DESC""")
-    List<Comment> findByPostIdOrderByChildrenCount(Long postId);
+    List<Comment> findByPostIdOrderByChildrenCount(@Param("postId") Long postId);
 }

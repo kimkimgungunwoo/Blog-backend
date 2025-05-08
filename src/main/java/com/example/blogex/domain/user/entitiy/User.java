@@ -83,12 +83,12 @@ public class User extends BaseEntity {
     //Follow 의 user 필드 기준으로 매핑된 Follow 들 저장
     // 이 User 가 어떤 Follow 의 follower 로 설정됐을때, 그 Follow 들이 저장됨
     @OneToMany(mappedBy = "follower")
-    private List<Follow> followingList = new ArrayList<>();
+    private List<Follow> followings = new ArrayList<>();
 
     //Follow 의 user 필드 기준으로 매핑된 Follow 들 저장
     // 이 User 가 어떤 Follow 의 following 로 설정됐을때, 그 Follow 들이 저장됨
     @OneToMany(mappedBy = "following")
-    private List<Follow> followerList = new ArrayList<>();
+    private List<Follow> followers = new ArrayList<>();
 
 
 

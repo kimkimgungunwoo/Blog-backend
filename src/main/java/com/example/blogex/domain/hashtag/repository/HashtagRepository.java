@@ -17,4 +17,21 @@ public interface HashtagRepository extends JpaRepository<HashTag,Long> {
     Collection<HashTag> findAllByTagIn(Collection<String> tags);
 
 
+    @Query("""
+    SELECT h
+    FROM HashTag h
+    left Join h.posts p
+    group by h
+    order by count(p) DESC""")
+    List<HashTag> findPopularTags();
+
+    @Query("""
+    SELECT h
+    from HashTag h
+    join h.posts p
+    where p.post.user.id=:userId
+    group by h
+    order by count (p) desc""")
+    List<HashTag> findPopularTagsByUserId(Long userId);
+
 }
