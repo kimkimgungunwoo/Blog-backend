@@ -13,7 +13,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     //유저댓글 전부 불러오기
     //댓글기록은 최신순이 기본
     List<Comment> findByUserIdOrderByCreateAtDesc(Long userId);
-
     //댓글 일부 내용으로 검색
     List<Comment> findByContentContainingOrderByCreateAtDesc(String commentText);
 
@@ -21,6 +20,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     //포스트에 있는 댓글들은 생성시간 오름차순
     List<Comment> findByPostIdOrderByCreateAtAsc(Long postId);
     
+    //포스트에 있는 댓글들 생성시간 내림차순 정렬
+    List<Comment> findByPostIdOrderByCreateAtDesc(Long postId);
+
     //댓글에 있는 답글들 불러오기
     //답글들도 기본적으로 생성시간 오름차순
     List<Comment> findByParentCommentIdOrderByCreateAtAsc(Long parentCommentId);

@@ -8,13 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/*
-    username 으로 유저 찾기
-    유저이름 일부검색
-    이메일로 유저찾기
 
-
- */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUsername(String username);
