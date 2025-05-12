@@ -147,6 +147,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 """)
     List<Post> findByTagContainingOrderByLikeDesc(@Param("kw") String kw);
 
+    //유저 게시글 중에서 해쉬태그로 모아보기(velog 기능)
     @Query("""
     select p
     from Post p

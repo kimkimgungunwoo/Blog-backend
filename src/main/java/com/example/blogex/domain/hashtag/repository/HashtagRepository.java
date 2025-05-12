@@ -12,13 +12,16 @@ import java.util.List;
 @Repository
 public interface HashtagRepository extends JpaRepository<HashTag,Long> {
 
+    //태그 이미 존재중인지 확인하는 용도
     boolean existsByTag(String tag);
 
+    //태그로 해쉬태그 찾는 용도
     HashTag findByTag(String tag);
-
+    
     Collection<HashTag> findAllByTagIn(Collection<String> tags);
 
 
+    //많이 사용된 해쉬태그 목록 보여주기
     @Query("""
     SELECT h
     FROM HashTag h
@@ -27,6 +30,7 @@ public interface HashtagRepository extends JpaRepository<HashTag,Long> {
     order by count(p) DESC""")
     List<HashTag> findPopularTags();
 
+    // 특정 유저가 많이 사용한 해쉬태그 목록 보여주기
     @Query("""
     SELECT h
     from HashTag h
