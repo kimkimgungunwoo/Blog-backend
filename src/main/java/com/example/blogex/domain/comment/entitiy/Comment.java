@@ -53,11 +53,6 @@ public class Comment extends BaseEntity {
         this.user = user;
         this.parentComment = parentComment;
     }
-    //댓들이 부모 댓글일때 답글들 불러오는 기능
-    //parentComment 와 매핑되어 저장->Comment 엔티티안에서 parentComment 기준으로 매핑된 애들 저장
-    //이 댓글이 다른 댓글의 parentComment 로 설정되었을 때, 그 자식 댓글들이 저장되는 필드
-    @OneToMany(mappedBy = "parentComment",orphanRemoval = true)
-    private List<Comment> children = new ArrayList<>();
 
     //CommentLike 의 likedComment 필드 기준으로 매핑된 commentLike 들 저장
     // 이 Comment 가 어떤 CommentLike 의 likedComment 로 설정됐을때, 그 commentLike 들이 저장됨
