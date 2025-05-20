@@ -43,10 +43,11 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     //쿼리사용
     @Query("""
     SELECT c
-    from Comment c
-    left JOIN c.children ch
-    WHERE c.post.id=:postId
+    FROM Comment c
+    LEFT JOIN Comment ch
+           ON ch.parentComment = c
+    WHERE c.post.id = :postId
     GROUP BY c
-    ORDER BY count(ch) DESC""")
+    ORDER BY COUNT(ch) DESC""")
     List<Comment> findByPostIdOrderByChildrenCount(@Param("postId") Long postId);
 }
