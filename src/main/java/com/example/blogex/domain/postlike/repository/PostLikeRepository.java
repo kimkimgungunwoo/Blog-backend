@@ -10,10 +10,10 @@ import java.util.List;
 public interface PostLikeRepository extends JpaRepository<PostLike,Long>  {
     //포스트에 달린 좋아요 리스트 불러오기
     //추후에 서비스 계층에서 매핑해서 사용
-    List<PostLike> findByPostIdOrderByCreateAtDesc(Long id);
+    List<PostLike> findByPostIdOrderByCreatedAtDesc(Long id);
 
     //유저가 누른 좋아요 리스트 불러오기
-    List<PostLike> findByLikedByIdOrderByCreateAtDesc(Long id);
+    List<PostLike> findByLikedByIdOrderByCreatedAtDesc(Long id);
     
     //포스트에 달린 좋아요 개수
     long countByPostId(Long id);

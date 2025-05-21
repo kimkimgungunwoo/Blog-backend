@@ -11,11 +11,11 @@ import java.util.List;
 public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
     //코멘트에 달린 좋아요리스트 불러오기
     //추후에 서비스 계층에서 매핑해서 사용
-    List<CommentLike> findByLikedCommentIdOrderByCreateAtDesc(Long id);
+    List<CommentLike> findByLikedCommentIdOrderByCreatedAtDesc(Long id);
     
     //유저가좋야요누른코멘트좋야오리스트불러오기
     //추후에 서비스 계층에서 매핑해서 사용
-    List<CommentLike> findByLikedByIdOrderByCreateAtDesc(Long id);
+    List<CommentLike> findByLikedByIdOrderByCreatedAtDesc(Long id);
 
     //댓글에 달린 좋아요 개수
     long countByLikedCommentId(Long id);
