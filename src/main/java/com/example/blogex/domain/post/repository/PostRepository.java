@@ -11,11 +11,11 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post,Long> {
     //모든 포스트 불러오기, 최신순이 기본
-    List<Post> findAllByOrderByCreateAtDesc();
+    List<Post> findAllByOrderByCreatedAtDesc();
 
     //유저 게시글 전부 불러오기
     //최신순이 기본
-    List<Post> findByUserIdOrderByCreateAtDesc(Long userId);
+    List<Post> findByUserIdOrderByCreatedAtDesc(Long userId);
 
     //좋아요 순으로 정렬
     @Query("""
@@ -95,7 +95,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     join p.comments c
     where c.content like %:kw%
     group by p
-    order by p.CreateAt desc
+    order by p.createdAt desc
 """)
     List<Post> findPostByCommentContentLikeOrderByDesc(@Param("kw") String kw);
 
@@ -118,7 +118,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     select p
     from Post p
     where p.user.username like %:kw%
-    order by p.CreateAt desc
+    order by p.createdAt desc
 """)
     List<Post> findByUsernameContainingOrderByCreateAtDesc(@Param("kw") String kw);
     
@@ -130,7 +130,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     join p.tags t
     where t.hashtag.tag like %:kw%
     group by p
-    order by p.CreateAt desc
+    order by p.createdAt desc
 """)
     List<Post> findByHashtagContainingOrderByCreateAtDesc(@Param("kw") String kw);
 
@@ -154,7 +154,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     join p.tags t
     where t = :kw and p.user.id =:UserId
     group by p
-    order by p.CreateAt desc
+    order by p.createdAt desc
 """)
     List<Post> findByUserIdAndTag(@Param("UserId") Long UserId, @Param("kw") String kw);
 }
