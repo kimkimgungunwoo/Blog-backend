@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 @Getter
 public class FollowInfo {
     private UserSimpleInfo userSimpleInfo;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     private boolean isMutual;
 
     @Builder
     public FollowInfo(UserSimpleInfo userSimpleInfo,
-                      LocalDateTime createAt,
+                      LocalDateTime createdAt,
                       boolean isMutual) {
         this.userSimpleInfo = userSimpleInfo;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
         this.isMutual = isMutual;
     }
 }

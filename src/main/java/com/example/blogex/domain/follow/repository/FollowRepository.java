@@ -11,10 +11,10 @@ import java.util.List;
 public interface FollowRepository extends JpaRepository<Follow, Long> {
     
     //팔로잉목록 불러오기,최신순정렬이 기본
-    List<Follow> findByFollowerIdOrderByCreateAtDesc(Long id);
+    List<Follow> findByFollowerIdOrderByCreatedAtDesc(Long id);
 
     //팔로워 목록 불러오기,최신순정렬이 기본값
-    List<Follow> findByFollowingUserIdOrderByCreateAtDesc(Long id);
+    List<Follow> findByFollowingUserIdOrderByCreatedAtDesc(Long id);
 
     //맞팔로우 여부 확인
     boolean exitsByFollowerIdAndFollowingUserId(Long id, Long userId);
