@@ -13,6 +13,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.awt.*;
+import java.util.List;
 
 @Mapper(componentModel="spring"
 ,uses = {UserMapper.class, PostMapper.class})
@@ -20,7 +21,9 @@ public interface CommentMapper {
 
     @Mapping(target = "postInfo",source = "post")
     @Mapping(target="userSimpleInfo",source="user")
-    CommentInfo toCommentInfo(Comment comment);
+    CommentInfo toInfo(Comment comment);
+
+    List<CommentInfo> toInfos(List<Comment> comments);
 
     CommentCreateResponse toResponse(Comment comment);
 
