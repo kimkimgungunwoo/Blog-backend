@@ -12,42 +12,44 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     //유저댓글 전부 불러오기
     //댓글기록은 최신순이 기본
+    //댓글,답글 구분하지 않고 검색
     List<Comment> findByUserIdOrderByCreatedAtDesc(Long userId);
+
     //댓글 일부 내용으로 검색
+    //답글,댓글 구분하지 않고 검색
     List<Comment> findByContentContainingOrderByCreatedAtDesc(String commentText);
 
     //포스트에 있는 댓글들 불러오기
     //포스트에 있는 댓글들은 생성시간 오름차순
+    //댓글-답글 트리 형태로 반환
+    @Query("""
+    select distinct c from Comment c
+    left join fetch c.replies r
+    where c.post.id =:postId
+        and c.parentComment is null
+    order by c.createdAt asc
+""")
     List<Comment> findByPostIdOrderByCreatedAtAsc(Long postId);
-    
-    //포스트에 있는 댓글들 생성시간 내림차순 정렬
-    List<Comment> findByPostIdOrderByCreatedAtDesc(Long postId);
-
-    //댓글에 있는 답글들 불러오기
-    //답글들도 기본적으로 생성시간 오름차순
-    List<Comment> findByParentCommentIdOrderByCreatedAtAsc(Long parentCommentId);
-
 
     //댓글 좋아요순 정렬
     //쿼리 사용
     @Query("""
-    SELECT c
+    SELECT distinct c
     FROM Comment c
-    left JOIN c.likes l
+    left join fetch c.replies r
     WHERE c.post.id = :postId
-    GROUP By c
-    ORDER BY count(l) DESC""")
-    List<Comment> findByPostIdOrderOrderByLikes(@Param("postId") Long postId);
+        and c.parentComment is null
+    ORDER BY size(c.likes) DESC""")
+    List<Comment> findByPostIdOrderByLikes(@Param("postId") Long postId);
 
     //댓글 답글 순 정렬
     //쿼리사용
     @Query("""
-    SELECT c
-    FROM Comment c
-    LEFT JOIN Comment ch
-           ON ch.parentComment = c
-    WHERE c.post.id = :postId
-    GROUP BY c
-    ORDER BY COUNT(ch) DESC""")
+    select distinct c from Comment c
+    left join fetch c.replies r
+    where c.post.id = :postId
+        and c.parentComment is null
+    order by size(c.replies) desc
+    """)
     List<Comment> findByPostIdOrderByChildrenCount(@Param("postId") Long postId);
 }

@@ -19,7 +19,8 @@ public class CommentInfo {
     private UserSimpleInfo userSimpleInfo;
     private String content;
     private LocalDateTime createdAt;
-    private List<CommentInfo> children;
+    private List<ReplyInfo> replies;
+    private int cntLike;
 
     @Builder
     public CommentInfo(
@@ -28,15 +29,16 @@ public class CommentInfo {
             UserSimpleInfo userSimpleInfo,
             String content,
             LocalDateTime createdAt,
-            List<CommentInfo> children
+            List<ReplyInfo> replies,
+            int cntLike
     ){
         this.id = id;
         this.postInfo = postInfo;
         this.userSimpleInfo = userSimpleInfo;
         this.content = content;
         this.createdAt = createdAt;
-        this.children = children;
-
+        this.replies = replies;
+        this.cntLike = cntLike;
     }
 
 
