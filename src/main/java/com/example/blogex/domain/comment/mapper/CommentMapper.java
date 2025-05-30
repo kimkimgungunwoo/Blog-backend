@@ -4,6 +4,7 @@ import ch.qos.logback.core.model.ComponentModel;
 import com.example.blogex.domain.comment.dto.CommentCreateRequest;
 import com.example.blogex.domain.comment.dto.CommentCreateResponse;
 import com.example.blogex.domain.comment.dto.CommentInfo;
+import com.example.blogex.domain.comment.dto.ReplyInfo;
 import com.example.blogex.domain.comment.entitiy.Comment;
 import com.example.blogex.domain.post.mapper.PostMapper;
 import com.example.blogex.domain.user.mapper.UserMapper;
@@ -25,7 +26,15 @@ public interface CommentMapper {
 
     List<CommentInfo> toInfos(List<Comment> comments);
 
+    @Mapping(target="userSimpleInfo",source="user")
+    ReplyInfo toReplyInfo(Comment comment);
+
+    List<ReplyInfo> toReplyInfos(List<Comment> comments);
+
+
+
     CommentCreateResponse toResponse(Comment comment);
+
 
 
 

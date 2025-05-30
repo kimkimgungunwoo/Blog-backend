@@ -58,4 +58,12 @@ public class Comment extends BaseEntity {
     // 이 Comment 가 어떤 CommentLike 의 likedComment 로 설정됐을때, 그 commentLike 들이 저장됨
     @OneToMany(mappedBy = "likedComment")
     private Set<CommentLike> likes = new HashSet<>();
+
+    @OrderBy("createdAt ASC")
+    @OneToMany(mappedBy = "parentComment",
+    cascade = CascadeType.ALL,
+    orphanRemoval = true,
+    fetch = FetchType.LAZY)
+    private List<Comment> replies = new ArrayList<>();
+
 }
