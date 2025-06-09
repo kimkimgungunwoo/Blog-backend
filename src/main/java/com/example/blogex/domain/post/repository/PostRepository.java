@@ -1,5 +1,6 @@
 package com.example.blogex.domain.post.repository;
 
+import com.example.blogex.domain.post.dto.PostStats;
 import com.example.blogex.domain.post.entitiy.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -157,4 +158,20 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     order by p.createdAt desc
 """)
     List<Post> findByUserIdAndTag(@Param("UserId") Long UserId, @Param("kw") String kw);
+
+
+
+    @Query("""
+    select new com.example.blogex.domain.post.dto.PostStats(
+    p.id,
+    count (c),
+    count (l)
+    )
+    from Post p
+    left join p.comments c
+    left join p.likes l
+    where p.id IN :ids
+    group by p.id
+""")
+    List<PostStats> findPostStatsByIds(@Param("ids") List<Long> ids);
 }

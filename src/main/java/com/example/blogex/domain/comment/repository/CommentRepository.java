@@ -1,5 +1,6 @@
 package com.example.blogex.domain.comment.repository;
 
+import com.example.blogex.domain.comment.dto.CommentStats;
 import com.example.blogex.domain.comment.entitiy.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,4 +53,17 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     order by size(c.replies) desc
     """)
     List<Comment> findByPostIdOrderByChildrenCount(@Param("postId") Long postId);
+
+
+    @Query("""
+    select new com.example.blogex.domain.comment.dto.CommentStats(
+    c.id,
+    count (l)
+    )
+    from Comment c
+    left join c.likes l
+    where c.id in :ids
+    group by c.id
+    """)
+    List<CommentStats> getCommentStats(@Param("ids") List<Long> ids);
 }

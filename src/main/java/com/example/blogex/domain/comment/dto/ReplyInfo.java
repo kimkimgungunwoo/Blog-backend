@@ -14,18 +14,15 @@ public class ReplyInfo {
     private UserSimpleInfo userSimpleInfo;
     private String content;
     private LocalDateTime createdAt;
-    private int cntLike;
 
     @Builder
     public ReplyInfo(Long id,
                      UserSimpleInfo userSimpleInfo,
                      String content,
-                     LocalDateTime createdAt,
-                     int cntLike) {
+                     LocalDateTime createdAt) {
         this.id = id;
         this.userSimpleInfo = userSimpleInfo;
         this.content = content;
         this.createdAt = createdAt;
-        this.cntLike = cntLike;
     }
 }
