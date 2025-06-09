@@ -6,12 +6,14 @@ import com.example.blogex.domain.user.dto.UserSimpleInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@Setter
 public class CommentInfo {
     private Long id;
     // 댓글목록에서도 게시글 확인할 수 있도록
@@ -19,8 +21,7 @@ public class CommentInfo {
     private UserSimpleInfo userSimpleInfo;
     private String content;
     private LocalDateTime createdAt;
-    private List<ReplyInfo> replies;
-    private int cntLike;
+    private List<ReplyFullInfo> replies;
 
     @Builder
     public CommentInfo(
@@ -29,8 +30,8 @@ public class CommentInfo {
             UserSimpleInfo userSimpleInfo,
             String content,
             LocalDateTime createdAt,
-            List<ReplyInfo> replies,
-            int cntLike
+            List<ReplyFullInfo> replies
+
     ){
         this.id = id;
         this.postInfo = postInfo;
@@ -38,7 +39,6 @@ public class CommentInfo {
         this.content = content;
         this.createdAt = createdAt;
         this.replies = replies;
-        this.cntLike = cntLike;
     }
 
 

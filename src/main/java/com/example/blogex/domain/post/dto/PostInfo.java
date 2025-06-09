@@ -17,8 +17,6 @@ public class PostInfo {
     private Long id;
     private UserSimpleInfo userSimpleInfo;
     private String title;
-    private int commentCount;
-    private int likeCount;
     private String previewImageUrl;
     private String previewImageOcr;
     private LocalDateTime createdAt;
@@ -30,8 +28,6 @@ public class PostInfo {
             Long id,
             UserSimpleInfo userSimpleInfo,
             String title,
-            int commentCount,
-            int likeCount,
             String previewImageOcr,
             String previewImageUrl,
             LocalDateTime createdAt,
@@ -41,8 +37,6 @@ public class PostInfo {
         this.id = id;
         this.userSimpleInfo = userSimpleInfo;
         this.title = title;
-        this.commentCount = commentCount;
-        this.likeCount = likeCount;
         this.previewImageOcr = previewImageOcr;
         this.previewImageUrl = previewImageUrl;
         this.createdAt = createdAt;
