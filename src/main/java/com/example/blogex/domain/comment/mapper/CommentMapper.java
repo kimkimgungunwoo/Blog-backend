@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface CommentMapper {
 
+    Comment toEntity(CommentCreateRequest request);
+
     @Mapping(target = "postInfo", source = "post")
     @Mapping(target = "userSimpleInfo", source = "user")
     CommentInfo toInfo(Comment comment);

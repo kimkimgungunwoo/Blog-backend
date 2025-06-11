@@ -43,6 +43,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     ORDER BY size(c.likes) DESC""")
     List<Comment> findByPostIdOrderByLikes(@Param("postId") Long postId);
 
+
+
     //댓글 답글 순 정렬
     //쿼리사용
     @Query("""
@@ -66,4 +68,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     group by c.id
     """)
     List<CommentStats> getCommentStats(@Param("ids") List<Long> ids);
+
+
+
 }
