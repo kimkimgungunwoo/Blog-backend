@@ -76,6 +76,16 @@ public class CommentService {
         return commentRepository.findByPostIdOrderByChildrenCount(postId);
     }
 
+    public List<CommentFullInfo> getCommentFullInfoList(List<Comment> commentList) {
+        List<Long> ids=commentList.stream()
+                .map(Comment::getId)
+                .toList();
+
+        List<CommentStats> stats=commentRepository.getCommentStats(ids);
+
+        return commentMapper.toFullInfos(commentList,stats);
+    }
+
     public List<CommentFullInfo> buildCommentTree (List<Comment> commentList) {
         List<Long> ids=commentList.stream()
                 .map(Comment::getId)
