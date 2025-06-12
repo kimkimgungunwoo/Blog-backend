@@ -3,6 +3,7 @@ package com.example.blogex.domain.follow.dto;
 
 import com.example.blogex.domain.user.dto.UserInfo;
 import com.example.blogex.domain.user.dto.UserSimpleInfo;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
