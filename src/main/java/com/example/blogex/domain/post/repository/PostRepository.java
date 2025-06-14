@@ -44,7 +44,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     left join p.comments pc
     group by p
     order by count(pc) desc""")
-    List<Post> findAllPopularPostByComments();
+    List<Post> findPopularPostByComments();
 
     //유저 작성글 중 댓글 순 정렬
     @Query("""
@@ -54,7 +54,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     where p.user.id =:userId
     group by p
     order by count(pc) desc""")
-    List<Post> findAllPopularPostByCommentByUserId(@Param("userId") Long userId);
+    List<Post> findPopularPostByCommentByUserId(@Param("userId") Long userId);
 
     //블록에 있는 Text 로  게시글 검색
     @Query("""
@@ -101,7 +101,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     List<Post> findPostByCommentContentLikeOrderByDesc(@Param("kw") String kw);
 
     //제목으로검색
-    List<Post> findByTitleContainingOrderByCreateAtDesc(String title);
+    List<Post> findByTitleContainingOrderByCreatedAtDesc(String title);
     
     //제목으로검색+좋아요 순 정렬
     @Query("""
