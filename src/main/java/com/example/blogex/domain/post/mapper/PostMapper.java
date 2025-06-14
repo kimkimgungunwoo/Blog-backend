@@ -24,16 +24,16 @@ public interface PostMapper {
 
     @Mapping(target = "cntLike",    source = "postStats.cntLike")
     @Mapping(target = "cntComment", source = "postStats.cntComment")
-    PostFullInfo toFullInfo(PostInfo postInfo, PostStats postStats);
+    PostFullInfo toFullInfo(Post post, PostStats postStats);
 
     default List<PostFullInfo> toFullInfos(
-            List<PostInfo> postInfos,
+            List<Post> posts,
             List<PostStats> postStatsList
     ) {
         Map<Long, PostStats> statsMap = postStatsList.stream()
                 .collect(Collectors.toMap(PostStats::getId, s -> s));
-        return postInfos.stream()
-                .map(info -> toFullInfo(info, statsMap.get(info.getId())))
+        return posts.stream()
+                .map(post -> toFullInfo(post, statsMap.get(post.getId())))
                 .toList();
     }
 }
