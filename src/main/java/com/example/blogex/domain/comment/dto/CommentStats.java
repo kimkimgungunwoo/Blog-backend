@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CommentStats {
     private Long id;
-    private Long cntLike;
+    private int cntLike;
 }

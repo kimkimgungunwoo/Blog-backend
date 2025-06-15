@@ -1,6 +1,7 @@
 package com.example.blogex.domain.commentlike.dto;
 
 
+import com.example.blogex.domain.comment.dto.CommentFullInfo;
 import com.example.blogex.domain.comment.dto.CommentInfo;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,13 +17,13 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class UserLikedComment {
-    private CommentInfo commentInfo;
+    private CommentFullInfo commentFullInfo;
     private LocalDateTime createdAt;
 
     @Builder
-    public UserLikedComment(CommentInfo commentInfo,
+    public UserLikedComment(CommentFullInfo commentFullInfo,
                             LocalDateTime createdAt) {
-        this.commentInfo = commentInfo;
+        this.commentFullInfo = commentFullInfo;
         this.createdAt = createdAt;
     }
 
