@@ -1,9 +1,6 @@
 package com.example.blogex.domain.user.mapper;
 
-import com.example.blogex.domain.user.dto.UserCreateRequest;
-import com.example.blogex.domain.user.dto.UserInfo;
-import com.example.blogex.domain.user.dto.UserProfile;
-import com.example.blogex.domain.user.dto.UserSimpleInfo;
+import com.example.blogex.domain.user.dto.*;
 import com.example.blogex.domain.user.entitiy.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -27,5 +24,8 @@ public interface UserMapper {
 
     @Mapping(target = "profileImageUrl",source="profileImage")
     UserProfile toUserProfile(User user);
+
+
+    UserCreateResponse toUserCreateResponse(User user);
 
 }
