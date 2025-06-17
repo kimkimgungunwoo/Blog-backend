@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 public class HashtagRankDto {
     private Long id;
     private String tag;
-    private Long cnt;
+    private int cnt;
 
     @Builder
     public HashtagRankDto(Long id,
                           String tag,
-                          Long cnt) {
+                          int cnt) {
         this.id = id;
         this.tag = tag;
         this.cnt = cnt;
