@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostStats {
     private Long id;
-    private int cntLike;
-    private int cntComment;
+    private Long cntLike;
+    private Long cntComment;
 
     @Builder
-    public PostStats(Long id, int cntLike, int cntComment) {
+    public PostStats(Long id, Long cntLike, Long cntComment) {
         this.id = id;
         this.cntLike = cntLike;
         this.cntComment = cntComment;
