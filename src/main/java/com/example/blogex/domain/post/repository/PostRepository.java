@@ -11,6 +11,8 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post,Long> {
+
+    int CountByUserID(Long id);
     //모든 포스트 불러오기, 최신순이 기본
     List<Post> findAllByOrderByCreatedAtDesc();
 

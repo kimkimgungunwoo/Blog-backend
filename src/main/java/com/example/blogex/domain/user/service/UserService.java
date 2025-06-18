@@ -23,6 +23,8 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     private final UserMapper userMapper;
 
 
@@ -45,8 +47,8 @@ public class UserService {
                 .updatedAt(user.getUpdatedAt())
                 .followersCount(followRepository.countByFollowingUserId(userId))
                 .followingCount(followRepository.countByFollowerId(userId))
-                .postCount(user.getPosts().size())
-                .commentCount(user.getComments().size()).
+                .postCount(postRepository.CountByUserID(userId))
+                .commentCount(commentRepository.CountByUserID(userId)).
                 build();
 
 
