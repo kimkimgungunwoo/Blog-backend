@@ -21,54 +21,51 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BlockService {
     /*
-    필요기능
-    1.블럭들 불러오기
-    2.블럭 만들기
-    3.Post 블럭 추가하기
-    4.블럭 수정
-    5.블럭 순서 변경
+    필요 기능
+    1. 블럭 불러오기
+    2.블럭 생성(블럭 추가)
+    3.블럭 내용 변경
+    4.블럭 순서 변경
      */
 
     private final BlockRepository blockRepository;
     private final BlockMapper blockMapper;
     private final PostRepository postRepository;
 
+    //포스트에 있는 블럭 모두 불러오기
     public List<BlockInfo> getBlocksByPostId(Long postId) {
         List<Block> blocks= blockRepository.findByPostIdOrderByOrder(postId);
         return blockMapper.toInfos(blocks);
     }
 
 
-
+    //블럭 생성
     public BlockCreateResponse createBlock(Long postId, BlockCreateRequest req) {
-        // 1) Post 조회
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found: " + postId));
 
-        // 2) DTO -> Entity 변환
         Block block = blockMapper.toEntity(req);
 
-        // 3) 현재 Post 의 최대 Order 확인
+        //현재 포스트의 블럭 개수 파악
         Integer maxOrder = blockRepository.findByPostIdOrderByOrder(postId)
                 .stream()
                 .map(Block::getOrder)
                 .max(Integer::compareTo)
                 .orElse(0);
 
-        // 4) 새 블록에 계산된 순서와 Post 설정
+        //블럭 개수 최대값을 order 로
         block.setOrder(maxOrder + 1);
         block.setPost(post);
 
-        // 5) 저장
         Block saved = blockRepository.save(block);
 
-        // 6) 응답 DTO 생성
         return BlockCreateResponse.builder()
                 .blockInfo(blockMapper.toInfo(saved))
                 .createdAt(saved.getCreatedAt())
                 .build();
     }
 
+    //블럭 내용 변경(순서변경과 다름)
     public BlockUpdateResponse updateBlock(Long blockId, BlockUpdateRequest req) {
         Block block=blockRepository.findById(blockId).orElseThrow(()
                 -> new EntityNotFoundException("Block not found: " + blockId));
@@ -79,24 +76,33 @@ public class BlockService {
 
     }
 
-    public BlockInfo moveBlock(Long blockId, Long postId,int newIndex) {
-        Block block=blockRepository.findById(blockId)
-                .filter(b->b.getPost().getId().equals(postId))
+    //블럭 순서 변경
+    public BlockInfo moveBlock(Long blockId, Long postId, int newIndex) {
+        Block block = blockRepository.findById(blockId)
+                .filter(b -> b.getPost().getId().equals(postId))
                 .orElseThrow(() -> new EntityNotFoundException("Block not found: " + blockId));
 
-        List<Block> blocks= blockRepository.findByPostIdOrderByOrder(postId);
-        for(Block b:blocks){
-            if(b.getOrder()>=newIndex){
-                b.setOrder(b.getOrder()+1);
-            }
-        }
-        block.setOrder(newIndex);
+        List<Block> blocks = blockRepository.findByPostIdOrderByOrder(postId);
 
-        return blockMapper.toInfo(blockRepository.save(block));
+        // 기존 블럭 제거
+        blocks.removeIf(b -> b.getId().equals(blockId));
+
+        // 새 위치에 삽입
+        blocks.add(newIndex, block);
+
+        // 순서 재정렬
+        for (int i = 0; i < blocks.size(); i++) {
+            blocks.get(i).setOrder(i);
+        }
+
+        // 저장
+        blockRepository.saveAll(blocks);
+        return blockMapper.toInfo(block);
     }
 
 
-    
-    
+
+
+
 
 }

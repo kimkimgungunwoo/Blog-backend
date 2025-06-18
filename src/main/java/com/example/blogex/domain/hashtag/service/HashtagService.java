@@ -23,6 +23,8 @@ public class HashtagService {
     private final HashtagRepository hashtagRepository;
     private final UserRepository userRepository;
     private final PostTagRepository postTagRepository;
+    
+    //해쉬 태그 생성
     public HashtagDto createHashtag(String tag) {
         HashTag hashtag = hashtagRepository.findByTag(tag);
 
@@ -38,6 +40,7 @@ public class HashtagService {
                 .build();
     }
 
+    //해쉬태그 순위 출력
     public List<HashtagRankDto> getHashTagRank(){
         List<HashTag> tags=hashtagRepository.findPopularTags();
 
@@ -49,6 +52,7 @@ public class HashtagService {
         }).toList();
     }
 
+    //특정 유저가 많이 사용한 해쉬태그 보여주기
     public List<HashtagRankDto> getUserHashtagRank(Long userID){
         List<HashTag> tags=hashtagRepository.findPopularTagsByUserId(userID);
 

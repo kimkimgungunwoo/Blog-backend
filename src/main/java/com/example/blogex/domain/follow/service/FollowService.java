@@ -24,6 +24,7 @@ public class FollowService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    //팔로우 기능
     public void follow(Long followerId, Long followingUserId ) {
         User followingUser=userRepository.findById(followingUserId)
                 .orElseThrow(()->new EntityNotFoundException("User not found"));
@@ -64,7 +65,7 @@ public class FollowService {
          return followList.stream()
                  .map(f->{
                      User follower=f.getFollower();
-                     return new FollowInfo().builder()
+                     return FollowInfo.builder()
                              .userSimpleInfo(userMapper.toUserSimpleInfo(follower))
                              .createdAt(f.getCreatedAt())
                              .isMutual(isMutual(follower.getId(),userId)).build();
@@ -80,7 +81,7 @@ public class FollowService {
         return followList.stream().map(
                 f->{
                     User followee=f.getFollowingUser();
-                    return new FollowInfo().builder()
+                    return  FollowInfo.builder()
                             .userSimpleInfo(userMapper.toUserSimpleInfo(followee))
                             .createdAt(f.getCreatedAt())
                             .isMutual(isMutual(followee.getId(),userId)).build();

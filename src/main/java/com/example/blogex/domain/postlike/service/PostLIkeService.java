@@ -58,7 +58,7 @@ public class PostLIkeService {
                 .map(l->{
                     User user=l.getLikedBy();
 
-                    return new PostLikedUser().builder()
+                    return  PostLikedUser.builder()
                             .userSimpleInfo(userMapper.toUserSimpleInfo(user))
                             .createdAt(l.getCreatedAt())
                             .build();
@@ -75,13 +75,9 @@ public class PostLIkeService {
         return likes.stream()
                 .map(l->{
                     Post post=l.getPost();
-                    PostStats stats=new PostStats().builder()
-                            .id(post.getId())
-                            .cntLike(post.getLikes().size())
-                            .cntComment(post.getComments().size())
-                            .build();
+                    PostStats stats=postRepository.findPostStatsById(post.getId());
 
-                    return new UserLikedPost().builder()
+                    return UserLikedPost.builder()
                             .postFullInfo(postMapper.toFullInfo(post,stats))
                             .createdAt(l.getCreatedAt())
                             .build();
