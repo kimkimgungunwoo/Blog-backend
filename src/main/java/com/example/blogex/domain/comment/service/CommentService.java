@@ -32,6 +32,14 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    /*
+    필요 기능
+    1. 댓글 생성
+    2. 답글 생성
+    3. 댓글 불러오기
+    4. 댓글 반환
+    5. 댓글-답글 트리 반환
+     */
     public CommentCreateResponse createComment(CommentCreateRequest commentCreateRequest, Long postId,Long userId) {
         Post post=postRepository.findById(postId).
                 orElseThrow(()->new EntityNotFoundException("Post not found"));
@@ -56,26 +64,32 @@ public class CommentService {
         return commentMapper.toResponse(commentRepository.save(reply));
     }
 
+    //유저의 댓글 목록 불러오기
     public List<Comment> getCommentsByUserId(Long userId) {
         return commentRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
 
+    //댓글 내용으로 댓글 검색
     public List<Comment> getCommentByContent(String content) {
         return commentRepository.findByContentContainingOrderByCreatedAtDesc(content);
     }
 
+    //포스트에 있는 댓글 목록 불러오기
     public List<Comment> getCommentByPostId(Long postId) {
         return commentRepository.findByPostIdOrderByCreatedAtAsc(postId);
     }
 
+    //포스트에 있는 댓글 좋아요 순 정렬
     public List<Comment> getCommentByPostIdOrderByLikes(Long postId) {
         return commentRepository.findByPostIdOrderByLikes(postId);
     }
 
+    //포스트에 있는 댓글 답글 순 정렬
     public List<Comment> getCommentByPostIdOrderByReplyCount(Long postId) {
         return commentRepository.findByPostIdOrderByChildrenCount(postId);
     }
 
+    //코멘트 FullInfo 로 변환(답글도 댓글 형태로)
     public List<CommentFullInfo> getCommentFullInfoList(List<Comment> commentList) {
         List<Long> ids=commentList.stream()
                 .map(Comment::getId)
@@ -86,6 +100,7 @@ public class CommentService {
         return commentMapper.toFullInfos(commentList,stats);
     }
 
+    //답글-댓글 형태로 CommentFullInfo 반환
     public List<CommentFullInfo> buildCommentTree (List<Comment> commentList) {
         List<Long> ids=commentList.stream()
                 .map(Comment::getId)

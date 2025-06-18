@@ -29,6 +29,8 @@ public class PostService {
     private final UserMapper userMapper;
     private final PostMapper postMapper;
     private final BlockService blockService;
+    
+    //일부 기능 추후 추가
 
     //포스트 생성
     public PostCreateResponse createPost(PostCreateRequest postCreateRequest, Long userId) {

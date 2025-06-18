@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,6 +32,13 @@ public class CommentLikeService {
     private final CommentMapper commentMapper;
     private final UserMapper userMapper;
 
+    /*
+        필요 기능
+        1. 좋아요 (다시 누를 경우 삭제)
+        2. 좋아요 누른 댓글들 불러오기
+        3. 좋아요 누른 사람들 불러오기
+    
+     */
     public void like(Long commentId,Long userId){
         Comment comment=commentRepository.findById(commentId)
                 .orElseThrow(()->new EntityNotFoundException("User Not Found"));
@@ -56,8 +64,8 @@ public class CommentLikeService {
         return likes.stream()
                 .map(l->{
                     Comment comment=l.getLikedComment();
-                    CommentStats stats=new CommentStats(comment.getId(),comment.getLikes().size());
-                    return new UserLikedComment().builder()
+                    CommentStats stats=commentRepository.getCommentStatsById(comment.getId());
+                    return UserLikedComment.builder()
                             .commentFullInfo(commentMapper.toFullInfo(comment,stats))
                             .createdAt(l.getCreatedAt())
                             .build();
@@ -75,7 +83,7 @@ public class CommentLikeService {
                     User user =l.getLikedBy();
                     UserSimpleInfo userSimpleInfo=userMapper.toUserSimpleInfo(user);
 
-                    return new CommentLikedUser().builder()
+                    return  CommentLikedUser.builder()
                             .userSimpleInfo(userSimpleInfo)
                             .createdAt(l.getCreatedAt())
                             .build();

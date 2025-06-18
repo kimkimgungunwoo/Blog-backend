@@ -174,4 +174,19 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     group by p.id
 """)
     List<PostStats> findPostStatsByIds(@Param("ids") List<Long> ids);
+
+    @Query("""
+    select new com.example.blogex.domain.post.dto.PostStats(
+        p.id,
+        count(c),
+        count(l)
+    )
+    from Post p
+    left join p.comments c
+    left join p.likes l
+    where p.id = :postId
+    group by p.id
+""")
+    PostStats findPostStatsById(@Param("postId") Long postId);
+
 }

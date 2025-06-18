@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     //유저댓글 전부 불러오기
@@ -69,6 +70,17 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     """)
     List<CommentStats> getCommentStats(@Param("ids") List<Long> ids);
 
+    @Query("""
+    select new com.example.blogex.domain.comment.dto.CommentStats(
+        c.id,
+        count(l)
+    )
+    from Comment c
+    left join c.likes l
+    where c.id = :id
+    group by c.id
+""")
+    CommentStats getCommentStatsById(@Param("id") Long id);
 
 
 }
