@@ -1,5 +1,6 @@
 package com.example.blogex.domain.posttag.service;
 
+import com.example.blogex.domain.hashtag.dto.HashtagDto;
 import com.example.blogex.domain.hashtag.entitiy.HashTag;
 import com.example.blogex.domain.hashtag.repository.HashtagRepository;
 import com.example.blogex.domain.post.entitiy.Post;
@@ -11,6 +12,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -61,5 +64,19 @@ public class PostTagService {
         if (tag == null) return 0;
 
         return postTagRepository.countByUserAndHashtag(userId, tag);
+    }
+
+    public List<HashtagDto> getTagsForPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+
+        List<PostTag> postTags = postTagRepository.findByPostId(postId);
+
+        return postTags.stream()
+                .map(pt -> HashtagDto.builder()
+                        .id(pt.getHashtag().getId())
+                        .tag(pt.getHashtag().getTag())
+                        .build())
+                .toList();
     }
 }
