@@ -4,8 +4,8 @@ import com.example.blogex.domain.comment.dto.CommentStats;
 import com.example.blogex.domain.comment.entitiy.Comment;
 import com.example.blogex.domain.comment.mapper.CommentMapper;
 import com.example.blogex.domain.comment.repository.CommentRepository;
-import com.example.blogex.domain.commentlike.dto.CommentLikedUser;
-import com.example.blogex.domain.commentlike.dto.UserLikedComment;
+import com.example.blogex.domain.commentlike.dto.LikedUserResponse;
+import com.example.blogex.domain.commentlike.dto.LikedCommentByUserResponse;
 import com.example.blogex.domain.commentlike.entitiy.CommentLike;
 import com.example.blogex.domain.commentlike.repository.CommentLikeRepository;
 import com.example.blogex.domain.user.dto.UserSimpleInfo;
@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -54,7 +53,7 @@ public class CommentLikeService {
         }
     }
 
-    public List<UserLikedComment> getCommentsLikedUser(Long userId){
+    public List<LikedCommentByUserResponse> getCommentsLikedUser(Long userId){
         User user=userRepository.findById(userId)
                 .orElseThrow(()->new EntityNotFoundException("User Not Found"));
 
@@ -65,14 +64,14 @@ public class CommentLikeService {
                 .map(l->{
                     Comment comment=l.getLikedComment();
                     CommentStats stats=commentRepository.getCommentStatsById(comment.getId());
-                    return UserLikedComment.builder()
+                    return LikedCommentByUserResponse.builder()
                             .commentFullInfo(commentMapper.toFullInfo(comment,stats))
                             .createdAt(l.getCreatedAt())
                             .build();
                 }).toList();
     }
 
-    public List<CommentLikedUser> getUsersLikedComment(Long commentId){
+    public List<LikedUserResponse> getUsersLikedComment(Long commentId){
         Comment comment =commentRepository.findById(commentId)
                 .orElseThrow(()->new EntityNotFoundException("Comment Not Found"));
 
@@ -83,7 +82,7 @@ public class CommentLikeService {
                     User user =l.getLikedBy();
                     UserSimpleInfo userSimpleInfo=userMapper.toUserSimpleInfo(user);
 
-                    return  CommentLikedUser.builder()
+                    return  LikedUserResponse.builder()
                             .userSimpleInfo(userSimpleInfo)
                             .createdAt(l.getCreatedAt())
                             .build();
