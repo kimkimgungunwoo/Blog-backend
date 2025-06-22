@@ -84,5 +84,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 """)
     CommentStats getCommentStatsById(@Param("id") Long id);
 
+    void deleteById(Long id);
+
 
 }

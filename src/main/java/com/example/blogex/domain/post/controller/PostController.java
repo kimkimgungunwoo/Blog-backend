@@ -3,20 +3,15 @@ package com.example.blogex.domain.post.controller;
 import com.example.blogex.domain.block.dto.BlockCreateRequest;
 import com.example.blogex.domain.block.dto.BlockCreateResponse;
 import com.example.blogex.domain.block.dto.BlockInfo;
-import com.example.blogex.domain.block.dto.BlockUpdateResponse;
-import com.example.blogex.domain.block.entitiy.Block;
 import com.example.blogex.domain.block.service.BlockService;
-import com.example.blogex.domain.comment.dto.CommentFullInfo;
-import com.example.blogex.domain.comment.entitiy.Comment;
-import com.example.blogex.domain.comment.service.CommentService;
 import com.example.blogex.domain.hashtag.dto.HashtagDto;
 import com.example.blogex.domain.post.dto.*;
-import com.example.blogex.domain.post.entitiy.Post;
 import com.example.blogex.domain.post.service.PostService;
+import com.example.blogex.domain.postlike.dto.LikedUserResponse;
+import com.example.blogex.domain.postlike.repository.PostLikeRepository;
+import com.example.blogex.domain.postlike.service.PostLIkeService;
 import com.example.blogex.domain.posttag.entitiy.PostTag;
 import com.example.blogex.domain.posttag.service.PostTagService;
-import com.example.blogex.domain.user.dto.UserSimpleInfo;
-import com.example.blogex.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +25,7 @@ public class PostController {
     private final PostService postService;
     private final PostTagService postTagService;
     private final BlockService blockService;
-    private final UserService userService;
-    private final CommentService commentService;
-
+    private final PostLIkeService postLIkeService;
     @PostMapping
     public PostCreateResponse createPost(@RequestBody PostCreateRequest request,
                                          @RequestParam Long userId) {
@@ -165,4 +158,18 @@ public class PostController {
     public List<PostFullInfo> getPopularPostsByCombine() {
         return postService.getPostFullInfoList(postService.findCombinePopularPost());
     }
+
+    // ===== 좋아요 =====
+    @PostMapping("/likes/{postId}")
+    public void addLike(@PathVariable Long postId, @RequestParam Long userId) {
+        postLIkeService.like(postId,userId);
+    }
+
+    @GetMapping("/likes/{postId}")
+    public List<LikedUserResponse> getLikedUser(@PathVariable Long postId){
+        return postLIkeService.getUsersWhoLikedPostx(postId);
+    }
+
+
+
 }
