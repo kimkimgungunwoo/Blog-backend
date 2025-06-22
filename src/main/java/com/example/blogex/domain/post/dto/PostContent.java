@@ -2,6 +2,7 @@ package com.example.blogex.domain.post.dto;
 
 
 import com.example.blogex.domain.block.dto.BlockInfo;
+import com.example.blogex.domain.comment.dto.CommentFullInfo;
 import com.example.blogex.domain.comment.dto.CommentInfo;
 import com.example.blogex.domain.hashtag.dto.HashtagDto;
 import lombok.Builder;
@@ -19,12 +20,12 @@ import java.util.List;
 public class PostContent {
 
     private List<BlockInfo> blockList;
-    private List<CommentInfo> commentList;
-    private PostInfo postInfo;
+    private List<CommentFullInfo> commentList;
+    private PostFullInfo postInfo;
     private List<HashtagDto> hashtagList;
 
     @Builder
-    public PostContent(List<BlockInfo> blockList, List<CommentInfo> commentList, PostInfo postInfo,
+    public PostContent(List<BlockInfo> blockList, List<CommentFullInfo> commentList, PostFullInfo postInfo,
                        List<HashtagDto> hashtagList) {
         this.blockList = blockList;
         this.commentList = commentList;

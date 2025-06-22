@@ -1,11 +1,18 @@
 package com.example.blogex.domain.post.service;
 
+import com.example.blogex.domain.block.dto.BlockInfo;
 import com.example.blogex.domain.block.repository.BlockRepository;
 import com.example.blogex.domain.block.service.BlockService;
+import com.example.blogex.domain.comment.dto.CommentFullInfo;
+import com.example.blogex.domain.comment.service.CommentService;
+import com.example.blogex.domain.hashtag.dto.HashtagDto;
+import com.example.blogex.domain.hashtag.entitiy.HashTag;
 import com.example.blogex.domain.post.dto.*;
 import com.example.blogex.domain.post.entitiy.Post;
 import com.example.blogex.domain.post.mapper.PostMapper;
 import com.example.blogex.domain.post.repository.PostRepository;
+import com.example.blogex.domain.posttag.service.PostTagService;
+import com.example.blogex.domain.user.dto.UserSimpleInfo;
 import com.example.blogex.domain.user.entitiy.User;
 import com.example.blogex.domain.user.mapper.UserMapper;
 import com.example.blogex.domain.user.repository.UserRepository;
@@ -29,6 +36,8 @@ public class PostService {
     private final UserMapper userMapper;
     private final PostMapper postMapper;
     private final BlockService blockService;
+    private final CommentService commentService;
+    private final PostTagService postTagService;
     
     //일부 기능 추후 추가
 
@@ -63,7 +72,6 @@ public class PostService {
     }
 
     //포스트 변경
-    //HashTagService 완성 후 변겅
     public PostInfo updatePost(PostUpdateRequest postUpdateRequest, Long postId) {
         Post post=postRepository.findById(postId).orElseThrow(()->new EntityNotFoundException("Post not found"));
 
@@ -147,6 +155,21 @@ public class PostService {
         return postMapper.toFullInfos(posts,stats);
 
 
+    }
+
+    public PostContent getContent(Long postId){
+        List<BlockInfo> blocks=blockService.getBlocksByPostId(postId);
+        List<CommentFullInfo> comments=commentService.buildCommentTree(commentService.getCommentByPostId(postId));
+        List<HashtagDto> hashTags=postTagService.getTagsForPost(postId);
+        PostFullInfo postFullInfo=postMapper.toFullInfo(postRepository.findById(postId).orElseThrow(),postRepository.findPostStatsById(postId));
+
+
+        return PostContent.builder()
+                .blockList(blocks)
+                .commentList(comments)
+                .postInfo(postFullInfo)
+                .hashtagList(hashTags)
+                .build();
     }
 
 
