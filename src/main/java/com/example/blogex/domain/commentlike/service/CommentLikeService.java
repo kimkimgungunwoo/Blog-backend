@@ -53,7 +53,7 @@ public class CommentLikeService {
         }
     }
 
-    public List<LikedCommentByUserResponse> getCommentsLikedUser(Long userId){
+    public List<LikedCommentByUserResponse> getCommentsLikedByUser(Long userId){
         User user=userRepository.findById(userId)
                 .orElseThrow(()->new EntityNotFoundException("User Not Found"));
 
@@ -71,7 +71,7 @@ public class CommentLikeService {
                 }).toList();
     }
 
-    public List<LikedUserResponse> getUsersLikedComment(Long commentId){
+    public List<LikedUserResponse> getUsersWhoLikedComment(Long commentId){
         Comment comment =commentRepository.findById(commentId)
                 .orElseThrow(()->new EntityNotFoundException("Comment Not Found"));
 

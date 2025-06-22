@@ -47,7 +47,7 @@ public class PostLIkeService {
         }
     }
 
-    public List<LikedUserResponse> getLikedUsers(Long postId) {
+    public List<LikedUserResponse> getUsersWhoLikedPostx(Long postId) {
         Post post= postRepository.findById(postId).
                 orElseThrow(()->new EntityNotFoundException("Post not found"));
 
@@ -65,7 +65,7 @@ public class PostLIkeService {
                 }).toList();
     };
 
-    public List<LikedPostByUserResponse> getLikedPost(Long userId){
+    public List<LikedPostByUserResponse> getPostsLikedByUser(Long userId){
         User user = userRepository.findById(userId).
                 orElseThrow(()->new EntityNotFoundException("User not found"));
 

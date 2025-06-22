@@ -132,8 +132,13 @@ public class CommentService {
                     return parentComment;
                 })
                 .toList();
+
+
     }
 
+    public void delete(Long commentId) {
+        commentRepository.deleteById(commentId);
+    }
 
 
 
