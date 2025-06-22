@@ -1,7 +1,6 @@
 package com.example.blogex.domain.postlike.dto;
 
 
-import com.example.blogex.domain.post.dto.PostInfo;
 import com.example.blogex.domain.user.dto.UserSimpleInfo;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,13 +14,13 @@ import java.time.LocalDateTime;
  */
 @Getter
 @NoArgsConstructor
-public class PostLikedUser {
+public class LikedUserResponse {
    private UserSimpleInfo userSimpleInfo;
    private LocalDateTime createdAt;
 
    @Builder
-    public PostLikedUser(UserSimpleInfo userSimpleInfo,
-                         LocalDateTime createdAt) {
+    public LikedUserResponse(UserSimpleInfo userSimpleInfo,
+                             LocalDateTime createdAt) {
        this.userSimpleInfo = userSimpleInfo;
        this.createdAt = createdAt;
    }

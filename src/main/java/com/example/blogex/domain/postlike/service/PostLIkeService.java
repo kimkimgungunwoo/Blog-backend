@@ -5,11 +5,10 @@ import com.example.blogex.domain.post.dto.PostStats;
 import com.example.blogex.domain.post.entitiy.Post;
 import com.example.blogex.domain.post.mapper.PostMapper;
 import com.example.blogex.domain.post.repository.PostRepository;
-import com.example.blogex.domain.postlike.dto.PostLikedUser;
-import com.example.blogex.domain.postlike.dto.UserLikedPost;
+import com.example.blogex.domain.postlike.dto.LikedUserResponse;
+import com.example.blogex.domain.postlike.dto.LikedPostByUserResponse;
 import com.example.blogex.domain.postlike.entitiy.PostLike;
 import com.example.blogex.domain.postlike.repository.PostLikeRepository;
-import com.example.blogex.domain.user.dto.UserSimpleInfo;
 import com.example.blogex.domain.user.entitiy.User;
 import com.example.blogex.domain.user.mapper.UserMapper;
 import com.example.blogex.domain.user.repository.UserRepository;
@@ -48,7 +47,7 @@ public class PostLIkeService {
         }
     }
 
-    public List<PostLikedUser> getLikedUsers(Long postId) {
+    public List<LikedUserResponse> getLikedUsers(Long postId) {
         Post post= postRepository.findById(postId).
                 orElseThrow(()->new EntityNotFoundException("Post not found"));
 
@@ -58,7 +57,7 @@ public class PostLIkeService {
                 .map(l->{
                     User user=l.getLikedBy();
 
-                    return  PostLikedUser.builder()
+                    return  LikedUserResponse.builder()
                             .userSimpleInfo(userMapper.toUserSimpleInfo(user))
                             .createdAt(l.getCreatedAt())
                             .build();
@@ -66,7 +65,7 @@ public class PostLIkeService {
                 }).toList();
     };
 
-    public List<UserLikedPost> getLikedPost(Long userId){
+    public List<LikedPostByUserResponse> getLikedPost(Long userId){
         User user = userRepository.findById(userId).
                 orElseThrow(()->new EntityNotFoundException("User not found"));
 
@@ -77,7 +76,7 @@ public class PostLIkeService {
                     Post post=l.getPost();
                     PostStats stats=postRepository.findPostStatsById(post.getId());
 
-                    return UserLikedPost.builder()
+                    return LikedPostByUserResponse.builder()
                             .postFullInfo(postMapper.toFullInfo(post,stats))
                             .createdAt(l.getCreatedAt())
                             .build();
