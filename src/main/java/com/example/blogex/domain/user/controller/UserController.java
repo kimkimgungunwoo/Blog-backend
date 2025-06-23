@@ -4,6 +4,8 @@ import com.example.blogex.domain.commentlike.dto.LikedCommentByUserResponse;
 import com.example.blogex.domain.commentlike.service.CommentLikeService;
 import com.example.blogex.domain.follow.dto.FollowInfo;
 import com.example.blogex.domain.follow.service.FollowService;
+import com.example.blogex.domain.hashtag.dto.HashtagRankDto;
+import com.example.blogex.domain.hashtag.service.HashtagService;
 import com.example.blogex.domain.post.dto.PostFullInfo;
 import com.example.blogex.domain.post.service.PostService;
 import com.example.blogex.domain.postlike.dto.LikedPostByUserResponse;
@@ -29,6 +31,7 @@ public class UserController {
     private final CommentLikeService commentLikeService;
     private final FollowService followService;
     private final PostService postService;
+    private final HashtagService hashtagService;
 
     @PostMapping()
     public UserCreateResponse createUser(@RequestBody UserCreateRequest request) {
@@ -72,6 +75,10 @@ public class UserController {
     }
 
 
+    @GetMapping("/hashtag/{userId}")
+    public List<HashtagRankDto> getUserHashTagRank(@PathVariable Long userId) {
+        return hashtagService.getUserHashtagRank(userId);
+    }
 
 
 

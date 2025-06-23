@@ -6,6 +6,7 @@ import com.example.blogex.domain.hashtag.dto.HashtagRankDto;
 import com.example.blogex.domain.hashtag.entitiy.HashTag;
 import com.example.blogex.domain.hashtag.repository.HashtagRepository;
 import com.example.blogex.domain.posttag.repository.PostTagRepository;
+import com.example.blogex.domain.posttag.service.PostTagService;
 import com.example.blogex.domain.user.entitiy.User;
 import com.example.blogex.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -23,7 +24,8 @@ public class HashtagService {
     private final HashtagRepository hashtagRepository;
     private final UserRepository userRepository;
     private final PostTagRepository postTagRepository;
-    
+    private final PostTagService postTagService;
+
     //해쉬 태그 생성
     public HashtagDto createHashtag(String tag) {
         HashTag hashtag = hashtagRepository.findByTag(tag);
@@ -60,7 +62,7 @@ public class HashtagService {
             return HashtagRankDto.builder()
                     .id(t.getId())
                     .tag(t.getTag())
-                    .cnt(postTagRepository.countByUserAndHashtag(userID,t))
+                    .cnt(postTagService.getHashtagUsageCountByUser(userID,t.getTag()))
                     .build();
         }).toList();
 
