@@ -11,6 +11,7 @@ import com.example.blogex.domain.postlike.dto.LikedUserResponse;
 import com.example.blogex.domain.postlike.repository.PostLikeRepository;
 import com.example.blogex.domain.postlike.service.PostLIkeService;
 import com.example.blogex.domain.posttag.entitiy.PostTag;
+import com.example.blogex.domain.posttag.repository.PostTagRepository;
 import com.example.blogex.domain.posttag.service.PostTagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class PostController {
     private final PostTagService postTagService;
     private final BlockService blockService;
     private final PostLIkeService postLIkeService;
+    private final PostTagRepository postTagRepository;
     @PostMapping
     public PostCreateResponse createPost(@RequestBody PostCreateRequest request,
                                          @RequestParam Long userId) {
@@ -169,6 +171,25 @@ public class PostController {
     public List<LikedUserResponse> getLikedUser(@PathVariable Long postId){
         return postLIkeService.getUsersWhoLikedPostx(postId);
     }
+
+    //===== 태그 =====
+
+    @PostMapping("/hashtag/{postId}")
+    public PostTag addHashtag(@PathVariable Long postId, @RequestParam String tag) {
+        return postTagService.addTag(postId,tag);
+    }
+
+    @DeleteMapping("/hashtag/{postId}")
+    public void deleteHashtag(@PathVariable Long postId, @RequestParam String tag) {
+        postTagService.deleteTag(postId,tag);
+    }
+
+    @GetMapping("/hashtag/{postId}")
+    public List<HashtagDto> getTag(@PathVariable Long postId) {
+        return postTagService.getTagsForPost(postId);
+    }
+
+
 
 
 
