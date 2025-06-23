@@ -2,6 +2,8 @@ package com.example.blogex.domain.user.controller;
 
 import com.example.blogex.domain.commentlike.dto.LikedCommentByUserResponse;
 import com.example.blogex.domain.commentlike.service.CommentLikeService;
+import com.example.blogex.domain.follow.dto.FollowInfo;
+import com.example.blogex.domain.follow.service.FollowService;
 import com.example.blogex.domain.postlike.dto.LikedPostByUserResponse;
 import com.example.blogex.domain.postlike.dto.LikedUserResponse;
 import com.example.blogex.domain.postlike.entitiy.PostLike;
@@ -23,6 +25,7 @@ public class UserController {
     private final UserService userService;
     private final PostLIkeService postLIkeService;
     private final CommentLikeService commentLikeService;
+    private final FollowService followService;
 
     @PostMapping()
     public UserCreateResponse createUser(@RequestBody UserCreateRequest request) {
@@ -43,6 +46,21 @@ public class UserController {
     @GetMapping("/likes/comment/{userId}")
     public List<LikedCommentByUserResponse> getCommentLikes(@PathVariable Long userId) {
         return commentLikeService.getCommentsLikedByUser(userId);
+    }
+
+    @PostMapping("/follow/{targetUserId}")
+    public void follow(@PathVariable Long targetUserId,@RequestParam Long userId) {
+        followService.follow(targetUserId,userId);
+    }
+
+    @GetMapping("/follow/{userId}/follow")
+    public List<FollowInfo> getFollows(@PathVariable Long userId) {
+        return followService.getFollows(userId);
+    }
+
+    @GetMapping("/follow/{userId}/follower")
+    public List<FollowInfo> getFollowers(@PathVariable Long userId) {
+        return followService.getFollowers(userId);
     }
 
 
