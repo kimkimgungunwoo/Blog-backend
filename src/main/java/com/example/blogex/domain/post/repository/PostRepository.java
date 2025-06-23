@@ -5,6 +5,7 @@ import com.example.blogex.domain.post.entitiy.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -190,5 +191,15 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     group by p.id
 """)
     PostStats findPostStatsById(@Param("postId") Long postId);
+
+
+    @Query("""
+    select p
+    from Post p
+    JOIN Follow f On f.followingUser.id=p.user.id
+    where f.follower.id = : userId
+    ORDER BY p.createdAt desc    
+""")
+    List<Post> getFeed(@Param("userIde") Long userId);
 
 }

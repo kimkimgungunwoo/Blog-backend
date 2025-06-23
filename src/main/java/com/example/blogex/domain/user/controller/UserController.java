@@ -4,6 +4,8 @@ import com.example.blogex.domain.commentlike.dto.LikedCommentByUserResponse;
 import com.example.blogex.domain.commentlike.service.CommentLikeService;
 import com.example.blogex.domain.follow.dto.FollowInfo;
 import com.example.blogex.domain.follow.service.FollowService;
+import com.example.blogex.domain.post.dto.PostFullInfo;
+import com.example.blogex.domain.post.service.PostService;
 import com.example.blogex.domain.postlike.dto.LikedPostByUserResponse;
 import com.example.blogex.domain.postlike.dto.LikedUserResponse;
 import com.example.blogex.domain.postlike.entitiy.PostLike;
@@ -26,6 +28,7 @@ public class UserController {
     private final PostLIkeService postLIkeService;
     private final CommentLikeService commentLikeService;
     private final FollowService followService;
+    private final PostService postService;
 
     @PostMapping()
     public UserCreateResponse createUser(@RequestBody UserCreateRequest request) {
@@ -35,6 +38,11 @@ public class UserController {
     @GetMapping("/{userId}")
     public UserProfile getUser(@PathVariable Long userId) {
         return userService.getUserProfile(userId);
+    }
+
+    @GetMapping("/{userId}/feed")
+    public List<PostFullInfo> getFeed(@PathVariable Long userId){
+        return postService.getPostFullInfoList(postService.getFeed(userId));
     }
 
 
