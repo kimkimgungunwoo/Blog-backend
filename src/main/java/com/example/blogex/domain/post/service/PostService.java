@@ -89,6 +89,10 @@ public class PostService {
         return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
+    public List<Post> getFeed(Long userId) {
+        return postRepository.getFeed(userId);
+    }
+
     public List<Post> getPostsByUserId(Long userId){
         return postRepository.findByUserIdOrderByCreatedAtDesc(userId);
     }
