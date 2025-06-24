@@ -1,5 +1,6 @@
 package com.example.blogex.domain.post.controller;
 
+import com.example.blogex.common.dto.ResultResponse;
 import com.example.blogex.domain.block.dto.BlockCreateRequest;
 import com.example.blogex.domain.block.dto.BlockCreateResponse;
 import com.example.blogex.domain.block.dto.BlockInfo;
@@ -14,9 +15,12 @@ import com.example.blogex.domain.posttag.entitiy.PostTag;
 import com.example.blogex.domain.posttag.repository.PostTagRepository;
 import com.example.blogex.domain.posttag.service.PostTagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.example.blogex.common.Code.ResultCode.BASED_SUCCESS;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,169 +32,91 @@ public class PostController {
     private final BlockService blockService;
     private final PostLIkeService postLIkeService;
     private final PostTagRepository postTagRepository;
+
     @PostMapping
-    public PostCreateResponse createPost(@RequestBody PostCreateRequest request,
-                                         @RequestParam Long userId) {
-        return postService.createPost(request, userId);
+    public ResponseEntity<ResultResponse> createPost(@RequestBody PostCreateRequest request,
+                                                     @RequestParam Long userId) {
+        PostCreateResponse response = postService.createPost(request, userId);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, response));
     }
 
     @GetMapping
-    public List<PostFullInfo> getAllPosts() {
-        return postService.getPostFullInfoList(postService.getAllPosts());
+    public ResponseEntity<ResultResponse> getAllPosts() {
+        List<PostFullInfo> posts = postService.getPostFullInfoList(postService.getAllPosts());
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, posts));
     }
 
     @GetMapping("/{postId}")
-    public PostContent getPost(@PathVariable Long postId) {
-        return postService.getContent(postId);
+    public ResponseEntity<ResultResponse> getPost(@PathVariable Long postId) {
+        PostContent post = postService.getContent(postId);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, post));
     }
 
     // ======== 블럭 관련 ========
 
     @PostMapping("/{postId}/blocks")
-    public BlockCreateResponse createBlock(@PathVariable Long postId, @RequestBody BlockCreateRequest request) {
-        return blockService.createBlock(postId, request);
+    public ResponseEntity<ResultResponse> createBlock(@PathVariable Long postId,
+                                                      @RequestBody BlockCreateRequest request) {
+        BlockCreateResponse response = blockService.createBlock(postId, request);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, response));
     }
 
     @PatchMapping("/{postId}/blocks/{blockId}")
-    public BlockInfo moveBlock(@PathVariable Long postId, @PathVariable Long blockId, @RequestParam int newIndex) {
-        return blockService.moveBlock(postId, blockId, newIndex);
+    public ResponseEntity<ResultResponse> moveBlock(@PathVariable Long postId,
+                                                    @PathVariable Long blockId,
+                                                    @RequestParam int newIndex) {
+        BlockInfo moved = blockService.moveBlock(postId, blockId, newIndex);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, moved));
     }
 
     // ======== 포스트 수정 ========
 
     @PatchMapping("/{postId}")
-    public PostInfo updatePost(@PathVariable Long postId,
-                               @RequestBody PostUpdateRequest request) {
-        return postService.updatePost(request, postId);
+    public ResponseEntity<ResultResponse> updatePost(@PathVariable Long postId,
+                                                     @RequestBody PostUpdateRequest request) {
+        PostInfo updated = postService.updatePost(request, postId);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, updated));
     }
 
     @PatchMapping("/{postId}/thumbnail")
-    public PostInfo updatePostThumbnail(@PathVariable Long postId,
-                                        @RequestBody PostThumbnailRequest request) {
-        return postService.CreatePostThumbnailRequest(request, postId);
+    public ResponseEntity<ResultResponse> updatePostThumbnail(@PathVariable Long postId,
+                                                              @RequestBody PostThumbnailRequest request) {
+        PostInfo updated = postService.CreatePostThumbnailRequest(request, postId);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, updated));
     }
 
     // ======== 태그 ========
 
     @PostMapping("/{postId}/tags")
-    public PostTag addTag(@PathVariable Long postId, @RequestParam String tag) {
-        return postTagService.addTag(postId, tag);
+    public ResponseEntity<ResultResponse> addTag(@PathVariable Long postId, @RequestParam String tag) {
+        PostTag result = postTagService.addTag(postId, tag);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, result));
     }
 
     @DeleteMapping("/{postId}/tags")
-    public void deleteTag(@PathVariable Long postId, @RequestParam String tag) {
+    public ResponseEntity<ResultResponse> deleteTag(@PathVariable Long postId, @RequestParam String tag) {
         postTagService.deleteTag(postId, tag);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
     }
 
     @GetMapping("/{postId}/tags")
-    public List<HashtagDto> getTags(@PathVariable Long postId) {
-        return postTagService.getTagsForPost(postId);
+    public ResponseEntity<ResultResponse> getTags(@PathVariable Long postId) {
+        List<HashtagDto> tags = postTagService.getTagsForPost(postId);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, tags));
     }
 
-    // ======== 검색 ========
+    // ======== 검색/인기/좋아요/해시태그 ========
 
-    @GetMapping("/search/title")
-    public List<PostFullInfo> searchByTitle(@RequestParam String title) {
-        return postService.getPostFullInfoList(postService.searchByTitle(title));
-    }
-
-    @GetMapping("/search/username")
-    public List<PostFullInfo> searchByUsername(@RequestParam String username) {
-        return postService.getPostFullInfoList(postService.searchByUserName(username));
-    }
-
-    @GetMapping("/search/tag")
-    public List<PostFullInfo> searchByTag(@RequestParam String tag) {
-        return postService.getPostFullInfoList(postService.searchByTag(tag));
-    }
-
-    @GetMapping("/search/user")
-    public List<PostFullInfo> searchByUserId(@RequestParam Long userId) {
-        return postService.getPostFullInfoList(postService.getPostsByUserId(userId));
-    }
-
-    @GetMapping("/search/content")
-    public List<PostFullInfo> searchByContent(@RequestParam String content) {
-        return postService.getPostFullInfoList(postService.searchByContent(content));
-    }
-
-    @GetMapping("/search/comment")
-    public List<PostFullInfo> searchByCommentContent(@RequestParam String commentContent) {
-        return postService.getPostFullInfoList(postService.SearchByCommentContent(commentContent));
-    }
-
-    // ======== 인기글 검색 ========
-
-    @GetMapping("/popular")
-    public List<PostFullInfo> getPopularPosts() {
-        return postService.getPostFullInfoList(postService.getPopularPosts());
-    }
-
-    @GetMapping("/popular/user")
-    public List<PostFullInfo> getPopularPostsByUserId(@RequestParam Long userId) {
-        return postService.getPostFullInfoList(postService.getPopularPostsByUserId(userId));
-    }
-
-    @GetMapping("/popular/tag")
-    public List<PostFullInfo> getPopularPostsByTag(@RequestParam String tag) {
-        return postService.getPostFullInfoList(postService.searchPopularByTag(tag));
-    }
-
-    @GetMapping("/popular/title")
-    public List<PostFullInfo> getPopularPostsByTitle(@RequestParam String title) {
-        return postService.getPostFullInfoList(postService.searchPopularByTitle(title));
-    }
-
-    @GetMapping("/popular/content")
-    public List<PostFullInfo> getPopularPostsByContent(@RequestParam String content) {
-        return postService.getPostFullInfoList(postService.searchPopularPostsByContent(content));
-    }
-
-    @GetMapping("/popular/comment")
-    public List<PostFullInfo> getPopularPostsByCommentCount() {
-        return postService.getPostFullInfoList(postService.getPopularPostsByCommentCnt());
-    }
-
-    @GetMapping("/popular/comment/user")
-    public List<PostFullInfo> getPopularPostsByCommentCountAndUser(@RequestParam Long userId) {
-        return postService.getPostFullInfoList(postService.getPopularPostsByCommentCntByUserId(userId));
-    }
-
-    @GetMapping("/popular/combine")
-    public List<PostFullInfo> getPopularPostsByCombine() {
-        return postService.getPostFullInfoList(postService.findCombinePopularPost());
-    }
-
-    // ===== 좋아요 =====
     @PostMapping("/likes/{postId}")
-    public void addLike(@PathVariable Long postId, @RequestParam Long userId) {
-        postLIkeService.like(postId,userId);
+    public ResponseEntity<ResultResponse> addLike(@PathVariable Long postId, @RequestParam Long userId) {
+        postLIkeService.like(postId, userId);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
     }
 
     @GetMapping("/likes/{postId}")
-    public List<LikedUserResponse> getLikedUser(@PathVariable Long postId){
-        return postLIkeService.getUsersWhoLikedPostx(postId);
+    public ResponseEntity<ResultResponse> getLikedUser(@PathVariable Long postId) {
+        List<LikedUserResponse> users = postLIkeService.getUsersWhoLikedPostx(postId);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, users));
     }
-
-    //===== 태그 =====
-
-    @PostMapping("/hashtag/{postId}")
-    public PostTag addHashtag(@PathVariable Long postId, @RequestParam String tag) {
-        return postTagService.addTag(postId,tag);
-    }
-
-    @DeleteMapping("/hashtag/{postId}")
-    public void deleteHashtag(@PathVariable Long postId, @RequestParam String tag) {
-        postTagService.deleteTag(postId,tag);
-    }
-
-    @GetMapping("/hashtag/{postId}")
-    public List<HashtagDto> getTag(@PathVariable Long postId) {
-        return postTagService.getTagsForPost(postId);
-    }
-
-
-
-
-
 }
+
