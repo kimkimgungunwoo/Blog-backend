@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing
-@Mapper(componentModel = "spring")
 public class BlogexApplication {
 
     public static void main(String[] args) {

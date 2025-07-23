@@ -16,7 +16,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
     //팔로워 목록 불러오기,최신순정렬이 기본값
     List<Follow> findByFollowingUserIdOrderByCreatedAtDesc(Long id);
 
-    boolean exitsByFollowerIdAndFollowingUserId(Long followerId, Long followingUserId);
+    boolean existsByFollowerIdAndFollowingUserId(Long followerId, Long followingUserId);
 
     //내가 얼마나 팔로우하고 있는지 카운트(내가 follower)
     int countByFollowerId(Long id);

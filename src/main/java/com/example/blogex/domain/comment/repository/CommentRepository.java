@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    int CountByUserID(Long id);
+    int countByUserId(Long id);
 
     //유저댓글 전부 불러오기
     //댓글기록은 최신순이 기본
