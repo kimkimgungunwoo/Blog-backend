@@ -32,7 +32,7 @@ public class FollowService {
         User follower=userRepository.findById(followerId)
                 .orElseThrow(()->new EntityNotFoundException("Follower not found"));
 
-        if(followRepository.exitsByFollowerIdAndFollowingUserId(followerId,followingUserId)){
+        if(followRepository.existsByFollowerIdAndFollowingUserId(followerId,followingUserId)){
             followRepository.deleteByFollowerIdAndFollowingUserId(followerId,followingUserId);
         }
         else{
@@ -50,7 +50,7 @@ public class FollowService {
         User follower=userRepository.findById(followerId)
                 .orElseThrow(()->new EntityNotFoundException("Follower not found"));
 
-        return followRepository.exitsByFollowerIdAndFollowingUserId(followerId,followingUserId);
+        return followRepository.existsByFollowerIdAndFollowingUserId(followerId,followingUserId);
     }
 
     public boolean isMutual(Long followerId, Long followingUserId) {

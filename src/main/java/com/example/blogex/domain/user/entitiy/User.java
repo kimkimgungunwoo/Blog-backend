@@ -22,7 +22,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="user")
+@Table(name="users")
 public class User extends BaseEntity {
 
     @Id
@@ -87,7 +87,7 @@ public class User extends BaseEntity {
 
     //Follow 의 user 필드 기준으로 매핑된 Follow 들 저장
     // 이 User 가 어떤 Follow 의 following 로 설정됐을때, 그 Follow 들이 저장됨
-    @OneToMany(mappedBy = "following")
+    @OneToMany(mappedBy = "followingUser")
     private List<Follow> followers = new ArrayList<>();
 
 

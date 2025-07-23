@@ -47,8 +47,8 @@ public class UserService {
                 .updatedAt(user.getUpdatedAt())
                 .followersCount(followRepository.countByFollowingUserId(userId))
                 .followingCount(followRepository.countByFollowerId(userId))
-                .postCount(postRepository.CountByUserID(userId))
-                .commentCount(commentRepository.CountByUserID(userId)).
+                .postCount(postRepository.countByUserId(userId))
+                .commentCount(commentRepository.countByUserId(userId)).
                 build();
 
 
