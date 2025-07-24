@@ -1,9 +1,7 @@
 package com.example.blogex.domain.post.controller;
 
 import com.example.blogex.common.dto.ResultResponse;
-import com.example.blogex.domain.block.dto.BlockCreateRequest;
-import com.example.blogex.domain.block.dto.BlockCreateResponse;
-import com.example.blogex.domain.block.dto.BlockInfo;
+import com.example.blogex.domain.block.dto.*;
 import com.example.blogex.domain.block.service.BlockService;
 import com.example.blogex.domain.hashtag.dto.HashtagDto;
 import com.example.blogex.domain.post.dto.*;
@@ -11,6 +9,7 @@ import com.example.blogex.domain.post.service.PostService;
 import com.example.blogex.domain.postlike.dto.LikedUserResponse;
 import com.example.blogex.domain.postlike.repository.PostLikeRepository;
 import com.example.blogex.domain.postlike.service.PostLIkeService;
+import com.example.blogex.domain.posttag.dto.PostTagDto;
 import com.example.blogex.domain.posttag.entitiy.PostTag;
 import com.example.blogex.domain.posttag.repository.PostTagRepository;
 import com.example.blogex.domain.posttag.service.PostTagService;
@@ -61,7 +60,7 @@ public class PostController {
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, response));
     }
 
-    @PatchMapping("/{postId}/blocks/{blockId}")
+    @PatchMapping("/{postId}/blocks/{blockId}/move")
     public ResponseEntity<ResultResponse> moveBlock(@PathVariable Long postId,
                                                     @PathVariable Long blockId,
                                                     @RequestParam int newIndex) {
@@ -69,6 +68,13 @@ public class PostController {
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, moved));
     }
 
+    @PatchMapping("/{postId}/block/{blockId}/update")
+    public ResponseEntity<ResultResponse> updateBlock(@PathVariable Long postId,
+                                                      @PathVariable Long blockId,
+                                                      @RequestBody BlockUpdateRequest request) {
+        BlockUpdateResponse blockUpdateResponse=blockService.updateBlock(blockId,request);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, blockUpdateResponse));
+    }
     // ======== 포스트 수정 ========
 
     @PatchMapping("/{postId}")
@@ -89,7 +95,7 @@ public class PostController {
 
     @PostMapping("/{postId}/tags")
     public ResponseEntity<ResultResponse> addTag(@PathVariable Long postId, @RequestParam String tag) {
-        PostTag result = postTagService.addTag(postId, tag);
+        PostTagDto result = postTagService.addTag(postId, tag);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, result));
     }
 

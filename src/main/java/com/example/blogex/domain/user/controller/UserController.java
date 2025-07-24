@@ -77,7 +77,7 @@ public class UserController {
     @PostMapping("/follow/{targetUserId}")
     public ResponseEntity<ResultResponse> follow(@PathVariable Long targetUserId,
                                                  @RequestParam Long userId) {
-        followService.follow(targetUserId, userId);
+        followService.follow(userId, targetUserId);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
     }
 
