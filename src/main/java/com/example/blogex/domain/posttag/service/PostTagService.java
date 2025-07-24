@@ -4,7 +4,9 @@ import com.example.blogex.domain.hashtag.dto.HashtagDto;
 import com.example.blogex.domain.hashtag.entitiy.HashTag;
 import com.example.blogex.domain.hashtag.repository.HashtagRepository;
 import com.example.blogex.domain.post.entitiy.Post;
+import com.example.blogex.domain.post.mapper.PostMapper;
 import com.example.blogex.domain.post.repository.PostRepository;
+import com.example.blogex.domain.posttag.dto.PostTagDto;
 import com.example.blogex.domain.posttag.entitiy.PostTag;
 import com.example.blogex.domain.posttag.repository.PostTagRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,7 +26,9 @@ public class PostTagService {
     private final HashtagRepository hashtagRepository;
     private final PostRepository postRepository;
 
-    public PostTag addTag(Long postId, String tagValue) {
+    private final PostMapper postMapper;
+
+    public PostTagDto addTag(Long postId, String tagValue) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found"));
 
@@ -41,8 +45,19 @@ public class PostTagService {
         PostTag postTag = new PostTag(post, tag);
         post.getTags().add(postTag);
         tag.getPosts().add(postTag);
+        PostTag savedPostTag = postTagRepository.save(postTag);
 
-        return postTagRepository.save(postTag);
+        return PostTagDto.builder().
+                hashtagDto(HashtagDto.builder().
+                        tag(savedPostTag.getHashtag().getTag()).
+                        id(savedPostTag.getHashtag().getId()).
+
+
+                        build()).
+                postInfo(postMapper.toInfo(savedPostTag.getPost())).
+                build();
+
+
     }
 
     public void deleteTag(Long postId, String tagValue) {

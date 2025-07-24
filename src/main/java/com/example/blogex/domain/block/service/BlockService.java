@@ -77,7 +77,7 @@ public class BlockService {
     }
 
     //블럭 순서 변경
-    public BlockInfo moveBlock(Long blockId, Long postId, int newIndex) {
+    public BlockInfo moveBlock(Long postId, Long blockId, int newIndex) {
         Block block = blockRepository.findById(blockId)
                 .filter(b -> b.getPost().getId().equals(postId))
                 .orElseThrow(() -> new EntityNotFoundException("Block not found: " + blockId));
