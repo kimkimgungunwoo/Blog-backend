@@ -27,10 +27,10 @@ public class CommentInfo {
     public CommentInfo(
             Long id,
             PostInfo postInfo,
-            UserSimpleInfo userSimpleInfo,
             String content,
             LocalDateTime createdAt,
-            List<ReplyFullInfo> replies
+            List<ReplyFullInfo> replies,
+            UserSimpleInfo userSimpleInfo
 
     ){
         this.id = id;

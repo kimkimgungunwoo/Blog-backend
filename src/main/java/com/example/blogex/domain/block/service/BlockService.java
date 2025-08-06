@@ -88,11 +88,11 @@ public class BlockService {
         blocks.removeIf(b -> b.getId().equals(blockId));
 
         // 새 위치에 삽입
-        blocks.add(newIndex, block);
+        blocks.add(newIndex-1, block);
 
         // 순서 재정렬
-        for (int i = 0; i < blocks.size(); i++) {
-            blocks.get(i).setOrder(i);
+        for (int i = 1; i <= blocks.size(); i++) {
+            blocks.get(i-1).setOrder(i);
         }
 
         // 저장

@@ -24,6 +24,7 @@ public interface PostMapper {
 
     @Mapping(target = "cntLike",    source = "postStats.cntLike")
     @Mapping(target = "cntComment", source = "postStats.cntComment")
+    @Mapping(target="postInfo" ,source="post")
     PostFullInfo toFullInfo(Post post, PostStats postStats);
 
     default List<PostFullInfo> toFullInfos(

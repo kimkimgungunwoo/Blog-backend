@@ -15,12 +15,12 @@ content 와 order 에 대한 변경만 가능, type 에 대한 변환은 고려�
 public class BlockUpdateRequest {
 
     private String content;
-    private int order;
-
-    @Builder
-    public BlockUpdateRequest(String content, int order) {
-        this.content = content;
-        this.order = order;
-    }
+//    private int order;
+//
+//    @Builder
+//    public BlockUpdateRequest(String content, int order) {
+//        this.content = content;
+//        this.order = order;
+//    }
 
 }
