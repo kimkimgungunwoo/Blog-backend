@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -91,14 +92,38 @@ public class CommentService {
 
     //코멘트 FullInfo 로 변환(답글도 댓글 형태로)
     public List<CommentFullInfo> getCommentFullInfoList(List<Comment> commentList) {
-        List<Long> ids=commentList.stream()
-                .map(Comment::getId)
+
+        // 루트 + 답글 ID 모두
+        List<Long> ids = commentList.stream()
+                .flatMap(root -> Stream.concat(
+                        Stream.of(root.getId()),
+                        root.getReplies().stream().map(Comment::getId)
+                ))
+                .distinct()
                 .toList();
 
-        List<CommentStats> stats=commentRepository.getCommentStats(ids);
+        Map<Long, CommentStats> statsMap = commentRepository.getCommentStats(ids)
+                .stream()
+                .collect(Collectors.toMap(CommentStats::getId, s -> s));
 
-        return commentMapper.toFullInfos(commentList,stats);
+        return commentList.stream()
+                .map(root -> {
+                    CommentFullInfo dto =
+                            commentMapper.toFullInfo(root, statsMap.get(root.getId()));
+
+                    // replies 직접 매핑
+                    List<ReplyFullInfo> replies = root.getReplies().stream()
+                            .map(r -> commentMapper.toReplyFullInfo(
+                                    r, statsMap.get(r.getId())))
+                            .toList();
+
+                    dto.getCommentInfo().setReplies(replies);
+                    return dto;
+                })
+                .toList();
     }
+
+
 
     //답글-댓글 형태로 CommentFullInfo 반환
     public List<CommentFullInfo> buildCommentTree (List<Comment> commentList) {
@@ -135,7 +160,9 @@ public class CommentService {
 
 
     }
-
+    public List<CommentSimpleInfo> getCommentSimpleInfoList(List<Comment> commentList) {
+        return commentMapper.toSimpleInfos(commentList);
+    }
     public void delete(Long commentId) {
         commentRepository.deleteById(commentId);
     }

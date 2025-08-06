@@ -21,15 +21,15 @@ public class PostContent {
 
     private List<BlockInfo> blockList;
     private List<CommentFullInfo> commentList;
-    private PostFullInfo postInfo;
+    private PostFullInfo postFullInfo;
     private List<HashtagDto> hashtagList;
 
     @Builder
-    public PostContent(List<BlockInfo> blockList, List<CommentFullInfo> commentList, PostFullInfo postInfo,
+    public PostContent(List<BlockInfo> blockList, List<CommentFullInfo> commentList, PostFullInfo postFullInfo,
                        List<HashtagDto> hashtagList) {
         this.blockList = blockList;
         this.commentList = commentList;
-        this.postInfo = postInfo;
+        this.postFullInfo = postFullInfo;
         this.hashtagList = hashtagList;
     }
 

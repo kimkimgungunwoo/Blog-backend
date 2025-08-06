@@ -171,7 +171,7 @@ public class PostService {
         return PostContent.builder()
                 .blockList(blocks)
                 .commentList(comments)
-                .postInfo(postFullInfo)
+                .postFullInfo(postFullInfo)
                 .hashtagList(hashTags)
                 .build();
     }

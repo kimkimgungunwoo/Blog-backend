@@ -5,6 +5,7 @@ import com.example.blogex.common.dto.ResultResponse;
 import com.example.blogex.domain.comment.dto.CommentCreateRequest;
 import com.example.blogex.domain.comment.dto.CommentCreateResponse;
 import com.example.blogex.domain.comment.dto.CommentFullInfo;
+import com.example.blogex.domain.comment.dto.CommentSimpleInfo;
 import com.example.blogex.domain.comment.mapper.CommentMapper;
 import com.example.blogex.domain.comment.repository.CommentRepository;
 import com.example.blogex.domain.comment.service.CommentService;
@@ -48,7 +49,7 @@ public class CommentController {
     // 게시글 댓글 전체 조회 (트리)
     @GetMapping("/post/{postId}")
     public ResponseEntity<ResultResponse> getAllComments(@PathVariable Long postId) {
-        List<CommentFullInfo> comments = commentService.buildCommentTree(
+        List<CommentFullInfo> comments = commentService.getCommentFullInfoList(
                 commentService.getCommentByPostId(postId));
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
     }
@@ -56,7 +57,7 @@ public class CommentController {
     // 좋아요 기준 정렬
     @GetMapping("/post/{postId}/popular/likes")
     public ResponseEntity<ResultResponse> getCommentsByLikes(@PathVariable Long postId) {
-        List<CommentFullInfo> comments = commentService.buildCommentTree(
+        List<CommentFullInfo> comments = commentService.getCommentFullInfoList(
                 commentService.getCommentByPostIdOrderByLikes(postId));
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
     }
@@ -64,7 +65,7 @@ public class CommentController {
     // 대댓글 수 기준 정렬
     @GetMapping("/post/{postId}/popular/replies")
     public ResponseEntity<ResultResponse> getCommentsByReplies(@PathVariable Long postId) {
-        List<CommentFullInfo> comments = commentService.buildCommentTree(
+        List<CommentFullInfo> comments = commentService.getCommentFullInfoList(
                 commentService.getCommentByPostIdOrderByReplyCount(postId));
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
     }
@@ -72,7 +73,7 @@ public class CommentController {
     // 유저 기준 댓글 조회
     @GetMapping("/user/{userId}")
     public ResponseEntity<ResultResponse> getCommentsByUser(@PathVariable Long userId) {
-        List<CommentFullInfo> comments = commentService.getCommentFullInfoList(
+        List<CommentSimpleInfo> comments = commentService.getCommentSimpleInfoList(
                 commentService.getCommentsByUserId(userId));
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
     }
@@ -80,7 +81,7 @@ public class CommentController {
     // 댓글 내용으로 검색
     @GetMapping("/search")
     public ResponseEntity<ResultResponse> searchComments(@RequestParam String search) {
-        List<CommentFullInfo> comments = commentService.getCommentFullInfoList(
+        List<CommentSimpleInfo> comments = commentService.getCommentSimpleInfoList(
                 commentService.getCommentByContent(search));
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
     }
