@@ -124,42 +124,6 @@ public class CommentService {
     }
 
 
-
-    //답글-댓글 형태로 CommentFullInfo 반환
-    public List<CommentFullInfo> buildCommentTree (List<Comment> commentList) {
-        List<Long> ids=commentList.stream()
-                .map(Comment::getId)
-                .toList();
-
-        Map<Long,CommentStats>  statsMap=commentRepository.getCommentStats(ids)
-                .stream()
-                .collect(Collectors.toMap(CommentStats ::getId,s->s));
-
-        Map<Long,List<Comment>> repliesByParent=commentList.stream()
-                .filter(c->c.getParentComment()!=null)
-                .collect(Collectors.groupingBy(c->c.getParentComment().getId()));
-
-        return commentList.stream()
-                .filter(c->c.getParentComment()==null)
-                .map(root->{
-                    CommentFullInfo parentComment=commentMapper.toFullInfo(root,statsMap.get(root.getId()));
-
-                    List<ReplyFullInfo> replies=repliesByParent
-                            .getOrDefault(root.getId(),List.of()).stream()
-                                    .sorted(Comparator.comparing(Comment::getCreatedAt).reversed())
-                            .map(reply->commentMapper.toReplyFullInfo(reply,statsMap.get(reply.getId())))
-                            .toList();
-
-
-
-                    parentComment.getCommentInfo().setReplies(replies);
-
-                    return parentComment;
-                })
-                .toList();
-
-
-    }
     public List<CommentSimpleInfo> getCommentSimpleInfoList(List<Comment> commentList) {
         return commentMapper.toSimpleInfos(commentList);
     }
