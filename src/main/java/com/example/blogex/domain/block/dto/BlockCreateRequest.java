@@ -14,14 +14,12 @@ import lombok.NoArgsConstructor;
 public class BlockCreateRequest {
     private String content;
     private BlockType type;
-    private int order;
 
     @Builder
     public BlockCreateRequest(String content,
-                              BlockType type,
-                              int order) {
+                              BlockType type
+                              ) {
         this.content = content;
         this.type = type;
-        this.order = order;
     }
 }

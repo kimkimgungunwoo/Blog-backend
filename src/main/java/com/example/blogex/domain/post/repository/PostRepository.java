@@ -198,9 +198,9 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     select p
     from Post p
     JOIN Follow f On f.followingUser.id=p.user.id
-    where f.follower.id = : userId
-    ORDER BY p.createdAt desc    
+    where f.follower.id = :userId
+    ORDER BY p.createdAt desc
 """)
-    List<Post> getFeed(@Param("userIde") Long userId);
+    List<Post> getFeed(@Param("userId") Long userId);
 
 }
