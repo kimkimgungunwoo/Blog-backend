@@ -38,6 +38,10 @@ public class UserController {
     private final PostService postService;
     private final HashtagService hashtagService;
 
+    // =========================================================
+    // 1) 유저 생성 / 프로필 (Users)
+    // =========================================================
+
     // 유저 생성
     @PostMapping
     public ResponseEntity<ResultResponse> createUser(@RequestBody UserCreateRequest request) {
@@ -52,12 +56,20 @@ public class UserController {
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, profile));
     }
 
+    // =========================================================
+    // 2) 피드 (Feed)
+    // =========================================================
+
     // 유저 피드 조회
     @GetMapping("/{userId}/feed")
     public ResponseEntity<ResultResponse> getFeed(@PathVariable Long userId) {
         List<PostFullInfo> feed = postService.getPostFullInfoList(postService.getFeed(userId));
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, feed));
     }
+
+    // =========================================================
+    // 3) 좋아요 (Likes)
+    // =========================================================
 
     // 유저가 좋아요 누른 게시글
     @GetMapping("/likes/post/{userId}")
@@ -73,12 +85,16 @@ public class UserController {
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
     }
 
+    // =========================================================
+    // 4) 팔로우 (Follow)
+    // =========================================================
+
     // 팔로우/언팔로우
     @PostMapping("/follow/{targetUserId}")
     public ResponseEntity<ResultResponse> follow(@PathVariable Long targetUserId,
                                                  @RequestParam Long userId) {
         followService.follow(userId, targetUserId);
-        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, null));
     }
 
     // 내가 팔로우 중인 유저 목록
@@ -94,6 +110,10 @@ public class UserController {
         List<FollowInfo> followers = followService.getFollowers(userId);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, followers));
     }
+
+    // =========================================================
+    // 5) 해시태그 (Hashtags)
+    // =========================================================
 
     // 내가 자주 사용하는 해시태그 순위
     @GetMapping("/hashtag/{userId}")

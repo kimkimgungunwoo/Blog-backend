@@ -28,6 +28,10 @@ public class CommentController {
     private final CommentLikeService commentLikeService;
     private final CommentMapper commentMapper;
 
+    // =========================================================
+    // 1) 댓글 작성 / 대댓글 작성 (Create & Reply)
+    // =========================================================
+
     // 댓글 작성
     @PostMapping("/post/{postId}")
     public ResponseEntity<ResultResponse> createComment(@PathVariable Long postId,
@@ -46,27 +50,15 @@ public class CommentController {
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, replyResponse));
     }
 
+    // =========================================================
+    // 2) 조회 (게시글 트리 / 유저별 / 내용 검색)
+    // =========================================================
+
     // 게시글 댓글 전체 조회 (트리)
     @GetMapping("/post/{postId}")
     public ResponseEntity<ResultResponse> getAllComments(@PathVariable Long postId) {
         List<CommentFullInfo> comments = commentService.getCommentFullInfoList(
                 commentService.getCommentByPostId(postId));
-        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
-    }
-
-    // 좋아요 기준 정렬
-    @GetMapping("/post/{postId}/popular/likes")
-    public ResponseEntity<ResultResponse> getCommentsByLikes(@PathVariable Long postId) {
-        List<CommentFullInfo> comments = commentService.getCommentFullInfoList(
-                commentService.getCommentByPostIdOrderByLikes(postId));
-        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
-    }
-
-    // 대댓글 수 기준 정렬
-    @GetMapping("/post/{postId}/popular/replies")
-    public ResponseEntity<ResultResponse> getCommentsByReplies(@PathVariable Long postId) {
-        List<CommentFullInfo> comments = commentService.getCommentFullInfoList(
-                commentService.getCommentByPostIdOrderByReplyCount(postId));
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
     }
 
@@ -86,26 +78,34 @@ public class CommentController {
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, comments));
     }
 
+    // =========================================================
+    // 3) 삭제
+    // =========================================================
+
     // 댓글 삭제
     @DeleteMapping("/{commentId}")
     public ResponseEntity<ResultResponse> deleteComment(@PathVariable Long commentId) {
         commentService.delete(commentId);
-        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, null));
     }
 
-    // ===== 좋아요 =====
+    // =========================================================
+    // 4) 좋아요 (Like)
+    // =========================================================
+
+    // 좋아요 등록/토글 등
     @PostMapping("/likes/{commentId}")
     public ResponseEntity<ResultResponse> likes(@PathVariable Long commentId,
                                                 @RequestParam Long userId) {
         commentLikeService.like(commentId, userId);
-        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, null));
     }
 
+    // 좋아요한 유저 목록
     @GetMapping("/likes/{commentId}")
     public ResponseEntity<ResultResponse> getLikedUsers(@PathVariable Long commentId) {
         List<LikedUserResponse> users = commentLikeService.getUsersWhoLikedComment(commentId);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, users));
     }
-
 
 }
