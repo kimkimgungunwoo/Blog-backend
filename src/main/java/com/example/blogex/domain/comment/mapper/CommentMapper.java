@@ -58,11 +58,6 @@ public interface CommentMapper {
     ReplyFullInfo toReplyFullInfo(Comment comment, CommentStats commentStats);
 
 
-    @AfterMapping
-    default void fillReplyInfo(Comment comment, @MappingTarget ReplyFullInfo.ReplyFullInfoBuilder target) {
-        target.replyInfo(this.toReplyInfo(comment));
-    }
-
     // 답글 + 좋아요 통계 리스트 매핑
     default List<ReplyFullInfo> toReplyFullInfos(
             List<Comment> replies,

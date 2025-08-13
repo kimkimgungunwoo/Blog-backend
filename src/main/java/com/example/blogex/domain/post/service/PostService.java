@@ -163,7 +163,7 @@ public class PostService {
 
     public PostContent getContent(Long postId){
         List<BlockInfo> blocks=blockService.getBlocksByPostId(postId);
-        List<CommentFullInfo> comments=commentService.buildCommentTree(commentService.getCommentByPostId(postId));
+        List<CommentFullInfo> comments=commentService.getCommentFullInfoList(commentService.getCommentByPostId(postId));
         List<HashtagDto> hashTags=postTagService.getTagsForPost(postId);
         PostFullInfo postFullInfo=postMapper.toFullInfo(postRepository.findById(postId).orElseThrow(),postRepository.findPostStatsById(postId));
 

@@ -166,12 +166,13 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     @Query("""
     select new com.example.blogex.domain.post.dto.PostStats(
     p.id,
-    count (c),
-    count (l)
+    count (l),
+    count (c)
     )
     from Post p
-    left join p.comments c
     left join p.likes l
+    left join p.comments c
+    
     where p.id IN :ids
     group by p.id
 """)
@@ -180,12 +181,13 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     @Query("""
     select new com.example.blogex.domain.post.dto.PostStats(
         p.id,
-        count(c),
-        count(l)
+        count(l),
+        count(c)
+        
     )
     from Post p
-    left join p.comments c
     left join p.likes l
+    left join p.comments c
     where p.id = :postId
     group by p.id
 """)
