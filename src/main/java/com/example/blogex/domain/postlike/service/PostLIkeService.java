@@ -47,7 +47,7 @@ public class PostLIkeService {
         }
     }
 
-    public List<LikedUserResponse> getUsersWhoLikedPostx(Long postId) {
+    public List<LikedUserResponse> getUsersWhoLikedPost(Long postId) {
         Post post= postRepository.findById(postId).
                 orElseThrow(()->new EntityNotFoundException("Post not found"));
 

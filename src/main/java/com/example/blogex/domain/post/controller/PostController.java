@@ -121,7 +121,7 @@ public class PostController {
 
     @GetMapping("/likes/{postId}")
     public ResponseEntity<ResultResponse> getLikedUser(@PathVariable Long postId) {
-        List<LikedUserResponse> users = postLIkeService.getUsersWhoLikedPostx(postId);
+        List<LikedUserResponse> users = postLIkeService.getUsersWhoLikedPost(postId);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, users));
     }
 }
