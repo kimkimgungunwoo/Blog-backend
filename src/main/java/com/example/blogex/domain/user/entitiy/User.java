@@ -7,6 +7,7 @@ import com.example.blogex.domain.follow.entitiy.Follow;
 import com.example.blogex.domain.post.entitiy.Post;
 import com.example.blogex.domain.postlike.entitiy.PostLike;
 import com.example.blogex.common.Entity.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,10 +34,11 @@ public class User extends BaseEntity {
     @Column(name="nusername")
     private String username;
 
-    @Column(name="email")
+    @Column(name="email" , unique = true)
     private String email;
 
-    @Column(name="password")
+    @JsonIgnore
+    @Column(name="password", length=60)
     private String password;
 
     @Column(name="description")

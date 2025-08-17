@@ -15,9 +15,13 @@ import com.example.blogex.domain.postlike.entitiy.PostLike;
 import com.example.blogex.domain.postlike.service.PostLIkeService;
 import com.example.blogex.domain.user.dto.UserCreateRequest;
 import com.example.blogex.domain.user.dto.UserCreateResponse;
+import com.example.blogex.domain.user.dto.UserLoginRequest;
 import com.example.blogex.domain.user.dto.UserProfile;
 import com.example.blogex.domain.user.entitiy.User;
+import com.example.blogex.domain.user.service.AuthService;
 import com.example.blogex.domain.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +41,7 @@ public class UserController {
     private final FollowService followService;
     private final PostService postService;
     private final HashtagService hashtagService;
+    private final AuthService authService;
 
     // =========================================================
     // 1) 유저 생성 / 프로필 (Users)
@@ -44,10 +49,34 @@ public class UserController {
 
     // 유저 생성
     @PostMapping
-    public ResponseEntity<ResultResponse> createUser(@RequestBody UserCreateRequest request) {
-        UserCreateResponse response = userService.createUser(request);
-        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, response));
+//    public ResponseEntity<ResultResponse> createUser(@RequestBody UserCreateRequest request) {
+//        UserCreateResponse response = userService.createUser(request);
+//        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, response));
+//    }
+    public ResponseEntity<ResultResponse> createUser(@RequestBody UserCreateRequest userCreateRequest) {
+        authService.signUp(userCreateRequest);
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<ResultResponse> login(
+            @RequestBody UserLoginRequest userLoginRequest,
+            HttpServletRequest request) {
+        Long userId= authService.login(userLoginRequest);
+        HttpSession httpSession=request.getSession(true);
+        httpSession.setAttribute("LOGIN_USER_ID",userId);
+        System.out.println("SESSION ID = " + httpSession.getId());
+
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ResultResponse> logout(HttpServletRequest request) {
+        var s = request.getSession(false);
+        if (s != null) s.invalidate();
+        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
+    }
+
 
     // 유저 프로필 조회
     @GetMapping("/{userId}")
@@ -92,7 +121,8 @@ public class UserController {
     // 팔로우/언팔로우
     @PostMapping("/follow/{targetUserId}")
     public ResponseEntity<ResultResponse> follow(@PathVariable Long targetUserId,
-                                                 @RequestParam Long userId) {
+                                                 @io.swagger.v3.oas.annotations.Parameter(hidden = true)
+                                                 @SessionAttribute(name ="LOGIN_USER_ID",required = true ) Long userId) {
         followService.follow(userId, targetUserId);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, null));
     }

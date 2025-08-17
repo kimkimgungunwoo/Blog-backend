@@ -39,7 +39,8 @@ public class PostController {
     // 포스트 생성
     @PostMapping
     public ResponseEntity<ResultResponse> createPost(@RequestBody PostCreateRequest request,
-                                                     @RequestParam Long userId) {
+                                                     @io.swagger.v3.oas.annotations.Parameter(hidden = true)
+                                                     @SessionAttribute(name ="LOGIN_USER_ID",required = true ) Long userId) {
         PostCreateResponse response = postService.createPost(request, userId);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, response));
     }
@@ -135,7 +136,9 @@ public class PostController {
 
     // 좋아요 등록/토글
     @PostMapping("/likes/{postId}")
-    public ResponseEntity<ResultResponse> addLike(@PathVariable Long postId, @RequestParam Long userId) {
+    public ResponseEntity<ResultResponse> addLike(@PathVariable Long postId,
+                                                  @io.swagger.v3.oas.annotations.Parameter(hidden = true)
+                                                  @SessionAttribute(name ="LOGIN_USER_ID",required = true ) Long userId) {
         postLIkeService.like(postId, userId);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, null));
     }
