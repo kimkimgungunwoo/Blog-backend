@@ -35,7 +35,8 @@ public class CommentController {
     // 댓글 작성
     @PostMapping("/post/{postId}")
     public ResponseEntity<ResultResponse> createComment(@PathVariable Long postId,
-                                                        @RequestParam Long userId,
+                                                        @io.swagger.v3.oas.annotations.Parameter(hidden = true)
+                                                        @SessionAttribute(name ="LOGIN_USER_ID",required = true ) Long userId,
                                                         @RequestBody CommentCreateRequest request) {
         CommentCreateResponse createResponse = commentService.createComment(request, postId, userId);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, createResponse));
@@ -44,7 +45,8 @@ public class CommentController {
     // 대댓글 작성
     @PostMapping("/{commentId}/reply")
     public ResponseEntity<ResultResponse> replyToComment(@PathVariable Long commentId,
-                                                         @RequestParam Long userId,
+                                                         @io.swagger.v3.oas.annotations.Parameter(hidden = true)
+                                                         @SessionAttribute(name ="LOGIN_USER_ID",required = true ) Long userId,
                                                          @RequestBody CommentCreateRequest request) {
         CommentCreateResponse replyResponse = commentService.createReply(request, commentId, userId);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, replyResponse));
