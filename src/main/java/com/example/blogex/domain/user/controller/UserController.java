@@ -49,10 +49,6 @@ public class UserController {
 
     // 유저 생성
     @PostMapping
-//    public ResponseEntity<ResultResponse> createUser(@RequestBody UserCreateRequest request) {
-//        UserCreateResponse response = userService.createUser(request);
-//        return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS, response));
-//    }
     public ResponseEntity<ResultResponse> createUser(@RequestBody UserCreateRequest userCreateRequest) {
         authService.signUp(userCreateRequest);
         return ResponseEntity.ok(ResultResponse.of(BASED_SUCCESS,null));
