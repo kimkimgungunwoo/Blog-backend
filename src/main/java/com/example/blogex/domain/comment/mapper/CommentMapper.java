@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 public interface CommentMapper {
 
 
-    Comment toEntity(CommentCreateRequest request);
 
     @Mapping(target = "postInfo", source = "post")
     @Mapping(target="userSimpleInfo" , source="user")

@@ -46,9 +46,7 @@ public class PostService {
         User user=userRepository.findById(userId)
                 .orElseThrow(()->new EntityNotFoundException("User not found"));
 
-        Post post=new Post();
-        post.setTitle(postCreateRequest.getTitle());
-        post.setUser(user);
+        Post post=Post.create(user,null,null,postCreateRequest.getTitle());
         Post savedPost=postRepository.save(post);
 
         return PostCreateResponse.builder().
@@ -64,7 +62,7 @@ public class PostService {
     public PostInfo CreatePostThumbnailRequest(PostThumbnailRequest postThumbnailRequest, Long postId) {
         Post post=postRepository.findById(postId).orElseThrow(()->new EntityNotFoundException("Post not found"));
 
-        post.setPreviewImage(postThumbnailRequest.getThumbnailUrl());
+        post.changePreviewImage(postThumbnailRequest.getThumbnailUrl());
         Post savedPost=postRepository.save(post);
 
         return postMapper.toInfo(savedPost);
@@ -75,8 +73,8 @@ public class PostService {
     public PostInfo updatePost(PostUpdateRequest postUpdateRequest, Long postId) {
         Post post=postRepository.findById(postId).orElseThrow(()->new EntityNotFoundException("Post not found"));
 
-        post.setSummation(postUpdateRequest.getSummary());
-        post.setTitle(postUpdateRequest.getTitle());
+        post.changePreviewImage(postUpdateRequest.getSummary());
+        post.changeTitle(postUpdateRequest.getTitle());
         Post savedPost=postRepository.save(post);
 
         return postMapper.toInfo(savedPost);

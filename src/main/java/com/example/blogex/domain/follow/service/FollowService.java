@@ -36,7 +36,7 @@ public class FollowService {
             followRepository.deleteByFollowerIdAndFollowingUserId(followerId,followingUserId);
         }
         else{
-            Follow follow=new Follow(follower,followingUser);
+            Follow follow=Follow.create(follower,followingUser);
             followRepository.save(follow);
         }
 

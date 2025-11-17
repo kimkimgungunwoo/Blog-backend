@@ -42,7 +42,7 @@ public class PostLIkeService {
             postLikeRepository.deleteByPostIdAndLikedById(postId, userId);
         }
         else{
-            PostLike postLike = new PostLike(user,post);
+            PostLike postLike = PostLike.create(user,post);
             postLikeRepository.save(postLike);
         }
     }

@@ -33,14 +33,6 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
-    /*
-    필요 기능
-    1. 댓글 생성
-    2. 답글 생성
-    3. 댓글 불러오기
-    4. 댓글 반환
-    5. 댓글-답글 트리 반환
-     */
     public CommentCreateResponse createComment(CommentCreateRequest commentCreateRequest, Long postId,Long userId) {
         Post post=postRepository.findById(postId).
                 orElseThrow(()->new EntityNotFoundException("Post not found"));
@@ -48,20 +40,16 @@ public class CommentService {
         User user=userRepository.findById(userId).
                 orElseThrow(()->new EntityNotFoundException("User not found"));
 
-        Comment comment=commentMapper.toEntity(commentCreateRequest);
-
-        comment.setPost(post);
-        comment.setUser(user);
+        Comment comment=Comment.create(commentCreateRequest.getContent(),post,user,null);
         return commentMapper.toResponse(commentRepository.save(comment));
 
     }
 
     public CommentCreateResponse createReply(CommentCreateRequest commentCreateRequest, Long parentCommentId,Long userId) {
         Comment parent=commentRepository.findById(parentCommentId).orElseThrow(()->new EntityNotFoundException("Comment not found"));
-        Comment reply=commentMapper.toEntity(commentCreateRequest);
-        reply.setParentComment(parent);
-        reply.setPost(parent.getPost());
-        reply.setUser(userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException("User not found")));
+        Post post=parent.getPost();
+        User user=userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException("User not found"));
+        Comment reply=Comment.create(commentCreateRequest.getContent(),post,user,parent);
         return commentMapper.toResponse(commentRepository.save(reply));
     }
 

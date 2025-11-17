@@ -10,7 +10,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    User toEntity(UserCreateRequest request);
 
     @Mapping(target = "profileImageUrl",source="profileImage")
     UserInfo toUserInfo(User user);

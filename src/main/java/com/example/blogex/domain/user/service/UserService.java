@@ -29,7 +29,10 @@ public class UserService {
 
 
     public UserCreateResponse createUser(UserCreateRequest userCreateRequest) {
-        User user=userMapper.toEntity(userCreateRequest);
+        User user=User.create(userCreateRequest.getUsername(),
+                userCreateRequest.getEmail(),
+                userCreateRequest.getPassword(),
+                null,null);
 
         return userMapper.toUserCreateResponse(userRepository.save(user));
     }
@@ -61,31 +64,31 @@ public class UserService {
 
     public UserInfo updateUsername(Long userId, String newUsername) {
         User user=userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException("User not found"));
-        user.setUsername(newUsername);
+        user.changeUsername(newUsername);
         return userMapper.toUserInfo(userRepository.save(user));
     }
 
     public UserInfo updateEmail(Long userId, String newEmail) {
         User user=userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException("User not found"));
-        user.setEmail(newEmail);
+        user.changeEmail(newEmail);
         return userMapper.toUserInfo(userRepository.save(user));
     }
 
     public UserInfo updatePassword(Long userId, String newPassword) {
         User user=userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException("User not found"));
-        user.setPassword(newPassword);
+        user.changePassword(newPassword);
         return userMapper.toUserInfo(userRepository.save(user));
     }
 
     public UserInfo updateProfileImage(Long userId, String newProfileImage) {
         User user=userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException("User not found"));
-        user.setProfileImage(newProfileImage);
+        user.changeProfileImage(newProfileImage);
         return userMapper.toUserInfo(userRepository.save(user));
     }
 
     public UserInfo updateDescription(Long userId, String newDescription) {
         User user=userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException("User not found"));
-        user.setDescription(newDescription);
+        user.changeDescription(newDescription);
         return userMapper.toUserInfo(userRepository.save(user));
     }
 

@@ -30,12 +30,15 @@ public class PostTag extends BaseEntity {
     @JoinColumn(name="hashtag_id")
     private HashTag hashtag;
 
-    @Builder
-    public PostTag(Post post,
-                   HashTag hashtag) {
+    public PostTag(Post post, HashTag hashtag) {
         this.post = post;
         this.hashtag = hashtag;
     }
+
+    public static PostTag create(Post post, HashTag hashtag) {
+        return new PostTag(post,hashtag);
+    }
+
 
 
 }

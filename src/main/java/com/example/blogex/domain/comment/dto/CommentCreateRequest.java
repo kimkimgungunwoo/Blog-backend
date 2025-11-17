@@ -12,13 +12,4 @@ public class CommentCreateRequest {
     private String content;
 
 
-//    @Builder
-//    public CommentCreateRequest(String content,
-//                                Long parentCommentId) {
-//
-//        this.content = content;
-//
-//    }
-//
-
 }

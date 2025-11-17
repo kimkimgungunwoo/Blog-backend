@@ -22,7 +22,6 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Getter
-@Setter
 @Table(name="users")
 public class User extends BaseEntity {
 
@@ -47,19 +46,35 @@ public class User extends BaseEntity {
     @Column(name="profileimage")
     private String profileImage;
 
-
-    @Builder
-    public User(String username,
-                String email,
-                String password,
-                String description,
-                String profileImage) {
+    public User(String username, String email, String password, String description, String profileImage) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.description = description;
         this.profileImage = profileImage;
+    }
 
+    public static User create(String username, String email, String password, String description, String profileImage) {
+        return new User(username,email,password,description,profileImage);
+    }
+
+    public void changeUsername(String username) {
+        this.username = username;
+    }
+
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
+    public void changeDescription(String description) {
+        this.description = description;
+    }
+
+    public void changeProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
     //Post 의 user 필드 기준으로 매핑된 post 들 저장
     // 이 User 가 어떤 Post 의 user 로 설정됐을때, 그 post 들이 저장됨

@@ -13,7 +13,6 @@ import lombok.Setter;
 @Entity
 @NoArgsConstructor
 @Getter
-@Setter
 @Table(name="postlike")
 public class PostLike extends BaseEntity {
 
@@ -30,9 +29,13 @@ public class PostLike extends BaseEntity {
     @JoinColumn(name="post_id")
     private Post post;
 
-    @Builder
-    public PostLike(User likedBy, Post post) {
+    public PostLike( User likedBy, Post post) {
         this.likedBy = likedBy;
         this.post = post;
     }
+
+    public static PostLike create(User likedBy, Post post) {
+        return new PostLike(likedBy,post);
+    }
+
 }

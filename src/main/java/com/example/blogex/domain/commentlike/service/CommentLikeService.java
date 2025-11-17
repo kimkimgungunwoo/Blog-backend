@@ -48,7 +48,7 @@ public class CommentLikeService {
             commentLikeRepository.deleteByLikedCommentIdAndLikedById(commentId,userId);
         }
         else {
-            CommentLike commentLike=new CommentLike(user,comment);
+            CommentLike commentLike=CommentLike.create(user,comment);
             commentLikeRepository.save(commentLike);
         }
     }
