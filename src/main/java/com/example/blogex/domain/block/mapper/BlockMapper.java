@@ -10,7 +10,6 @@ import java.util.List;
 public interface BlockMapper {
 
 
-    Block toEntity(BlockCreateRequest blockCreateRequest);
 
     BlockInfo toInfo(Block block);
 

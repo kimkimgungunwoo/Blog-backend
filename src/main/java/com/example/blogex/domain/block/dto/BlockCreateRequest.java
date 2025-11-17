@@ -15,11 +15,4 @@ public class BlockCreateRequest {
     private String content;
     private BlockType type;
 
-    @Builder
-    public BlockCreateRequest(String content,
-                              BlockType type
-                              ) {
-        this.content = content;
-        this.type = type;
-    }
 }

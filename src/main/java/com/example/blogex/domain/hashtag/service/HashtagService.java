@@ -32,7 +32,7 @@ public class HashtagService {
 
         if (hashtag == null) {
             hashtag = hashtagRepository.save(
-                    HashTag.builder().tag(tag).build()
+                    HashTag.create(tag)
             );
         }
 

@@ -44,18 +44,13 @@ public class BlockService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found: " + postId));
 
-        Block block = blockMapper.toEntity(req);
-
-        //현재 포스트의 블럭 개수 파악
         Integer maxOrder = blockRepository.findByPostIdOrderByOrder(postId)
                 .stream()
                 .map(Block::getOrder)
                 .max(Integer::compareTo)
                 .orElse(0);
 
-        //블럭 개수 최대값을 order 로
-        block.setOrder(maxOrder + 1);
-        block.setPost(post);
+        Block block=Block.create(post,req.getType(),req.getContent(),maxOrder+1);
 
         Block saved = blockRepository.save(block);
 
@@ -92,7 +87,7 @@ public class BlockService {
 
         // 순서 재정렬
         for (int i = 1; i <= blocks.size(); i++) {
-            blocks.get(i-1).setOrder(i);
+            blocks.get(i-1).changeOrder(i);
         }
 
         // 저장

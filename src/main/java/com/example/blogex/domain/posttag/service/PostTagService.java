@@ -34,7 +34,7 @@ public class PostTagService {
 
         HashTag tag = hashtagRepository.findByTag(tagValue);
         if (tag == null) {
-            tag = hashtagRepository.save(HashTag.builder().tag(tagValue).build());
+            tag = hashtagRepository.save(HashTag.create(tagValue));
         }
 
         // 중복 방지
@@ -42,7 +42,7 @@ public class PostTagService {
             throw new IllegalStateException("Tag already exists for this post");
         }
 
-        PostTag postTag = new PostTag(post, tag);
+        PostTag postTag =PostTag.create(post, tag);
         post.getTags().add(postTag);
         tag.getPosts().add(postTag);
         PostTag savedPostTag = postTagRepository.save(postTag);

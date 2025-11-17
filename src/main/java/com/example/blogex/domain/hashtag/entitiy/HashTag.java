@@ -14,7 +14,6 @@ import java.util.Set;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name="hashtag")
 
@@ -28,9 +27,12 @@ public class HashTag extends BaseEntity {
     @Column(name="tag",unique = true)
     private String tag;
 
-    @Builder
-    public HashTag(String tag) {
+    public HashTag(String tag){
         this.tag = tag;
+    }
+
+    public static HashTag create(String tag){
+        return new HashTag(tag);
     }
 
     @OneToMany(mappedBy = "hashtag")

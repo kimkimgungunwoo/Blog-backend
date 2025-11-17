@@ -11,7 +11,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name="follow")
 public class Follow extends BaseEntity {
@@ -32,11 +31,15 @@ public class Follow extends BaseEntity {
     @JoinColumn(name = "following_id")
     private User followingUser;
 
-    @Builder
-    public Follow(User follower,
-                  User followingUser) {
+    public Follow(User follower, User followingUser) {
         this.follower = follower;
         this.followingUser = followingUser;
     }
+
+    public static Follow create(User follower, User followingUser) {
+        return new Follow(follower, followingUser);
+
+    }
+
 }
 

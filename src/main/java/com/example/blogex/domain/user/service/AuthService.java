@@ -29,8 +29,10 @@ public class AuthService {
             throw new IllegalStateException("dup");
         }
 
-        User user=userMapper.toEntity(userCreateRequest);
-        user.setPassword(encoder.encode(userCreateRequest.getPassword()));
+        User user=User.create(userCreateRequest.getUsername(),
+                userCreateRequest.getEmail(),
+                userCreateRequest.getPassword(),
+                null,null);
         userRepository.save(user);
     }
 

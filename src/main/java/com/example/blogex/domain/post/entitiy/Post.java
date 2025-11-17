@@ -20,7 +20,6 @@ import java.util.Set;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name="post")
 public class Post extends BaseEntity {
@@ -37,8 +36,6 @@ public class Post extends BaseEntity {
     @Column(name="preview_image")
     private String previewImage;
 
-    @Column(name="preview_image_ocr")
-    private String previewImageOcr;
 
     @Column(name="summation")
     private String summation;
@@ -46,21 +43,28 @@ public class Post extends BaseEntity {
     @Column(name="title")
     private String title;
 
-
-    @Builder
-    public Post(User user,
-                String previewImage,
-                String previewImageOcr,
-                String summation,
-                String title) {
+    public Post(User user, String previewImage, String summation, String title) {
         this.user = user;
         this.previewImage = previewImage;
-        this.previewImageOcr = previewImageOcr;
         this.summation = summation;
         this.title = title;
-
     }
 
+    public static Post create(User user, String previewImage, String summation, String title) {
+        return new Post(user, previewImage, summation, title);
+    }
+
+    public void changePreviewImage(String previewImage) {
+        this.previewImage=previewImage;
+    }
+
+    public void changeSummation(String summation) {
+        this.summation=summation;
+    }
+
+    public void changeTitle(String title) {
+        this.title=title;
+    }
 
     //Block 의 post 필드 기준으로 매핑된 block 들 저장
     // 이 Post 가 어떤 Block 의 post 로 설정됐을때, 그 block 들이 저장됨

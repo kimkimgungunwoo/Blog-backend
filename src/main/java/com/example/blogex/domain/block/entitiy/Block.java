@@ -4,14 +4,11 @@ package com.example.blogex.domain.block.entitiy;
 import com.example.blogex.domain.post.entitiy.Post;
 import com.example.blogex.common.Entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "block")
 public class Block extends BaseEntity {
 
@@ -36,11 +33,23 @@ public class Block extends BaseEntity {
     @Column(name = "block_order")
     private Integer order;  // 블록 순서
 
-    @Builder
-    public Block(Post post, BlockType type, String content, Integer order) {
+    public Block(Post post, BlockType type, String content, Integer order){
         this.post = post;
         this.type = type;
         this.content = content;
         this.order = order;
     }
+
+    public static Block create(Post post, BlockType type, String content, Integer order) {
+        return new Block(post,type,content,order);
+    }
+
+    public void changeOrder(Integer order){
+        this.order = order;
+    }
+
+    public void changeContent(String content){
+        this.content = content;
+    }
+
 }

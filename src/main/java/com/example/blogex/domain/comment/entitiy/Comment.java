@@ -19,7 +19,6 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Getter
-@Setter
 @Table(name="comment")
 public class Comment extends BaseEntity {
 
@@ -43,16 +42,21 @@ public class Comment extends BaseEntity {
     @JoinColumn(name="parent_comment_id",nullable = true)
     private Comment parentComment;
 
-    @Builder
-    public Comment(String content,
-                   Post post,
-                   User user,
-                   Comment parentComment) {
+    public Comment (String content, Post post, User user,Comment parentComment) {
         this.content = content;
         this.post = post;
         this.user = user;
         this.parentComment = parentComment;
     }
+
+    public static Comment create(String content, Post post, User user,Comment parentComment) {
+        return new Comment(content, post, user, parentComment);
+    }
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
+
 
     //CommentLike 의 likedComment 필드 기준으로 매핑된 commentLike 들 저장
     // 이 Comment 가 어떤 CommentLike 의 likedComment 로 설정됐을때, 그 commentLike 들이 저장됨
